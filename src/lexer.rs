@@ -4,6 +4,7 @@
 
 use std::fmt;
 
+#[derive(Debug, PartialEq)]
 pub enum TokenType {
     Illegal,
     Eof,
@@ -13,6 +14,7 @@ pub enum TokenType {
     Int(String),
 
     // Operators
+    Assign,
     Plus,
 
     // Delimiters
@@ -44,6 +46,7 @@ impl fmt::Display for TokenType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             TokenType::Illegal => write!(f, "Token Illegal"),
+            TokenType::Assign => write!(f, "Token Assign"),
             TokenType::Eof => write!(f, "Token Eof"),
             TokenType::Plus => write!(f, "Token Plus"),
             TokenType::Comma => write!(f, "Token Comma"),
@@ -99,10 +102,46 @@ impl<'l> Lexer<'l> {
 
     fn next_token(&mut self) -> Token {
         let tok = match self.read_char() {
-            '=' => Token::new(TokenType::Plus, String::from('=')),
-            _ => todo!(),
+            '=' => Token::new(TokenType::Assign, String::from('=')),
+            '+' => Token::new(TokenType::Plus, String::from('+')),
+            ',' => Token::new(TokenType::Comma, String::from(',')),
+            ';' => Token::new(TokenType::Semicolon, String::from(';')),
+            '(' => Token::new(TokenType::LParen, String::from('(')),
+            ')' => Token::new(TokenType::RParen, String::from(')')),
+            '{' => Token::new(TokenType::LBrace, String::from('{')),
+            '}' => Token::new(TokenType::RBrace, String::from('}')),
+            _ => Token::new(TokenType::Eof, String::from("")),
         };
 
         return tok;
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::Lexer;
+    use crate::lexer::TokenType;
+
+    #[test]
+    fn test_next_token() {
+        let input = String::from("=+(){},;");
+
+        let output = [
+            TokenType::Assign,
+            TokenType::Plus,
+            TokenType::LParen,
+            TokenType::RParen,
+            TokenType::LBrace,
+            TokenType::RBrace,
+            TokenType::Comma,
+            TokenType::Semicolon,
+        ];
+
+        let mut lexer = Lexer::new(&input);
+
+        for test_case in output {
+            let token = lexer.next_token();
+            assert_eq!(token._type, test_case);
+        }
     }
 }
