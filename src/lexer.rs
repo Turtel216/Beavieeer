@@ -58,7 +58,7 @@ impl fmt::Display for TokenType {
             TokenType::Function => write!(f, "Token Function"),
             TokenType::Let => write!(f, "Token Let"),
             TokenType::Ident(v) => write!(f, "Token Ident: {v}"),
-            TokenType::Int(v) => write!(f, "Token Ident: {v}"),
+            TokenType::Int(v) => write!(f, "Token Int: {v}"),
         }
     }
 }
@@ -67,15 +67,22 @@ pub struct Lexer<'l> {
     input: &'l String,
     position: usize,
     read_position: usize,
+    chr: char,
 }
 
 impl<'l> Lexer<'l> {
     pub fn new(input: &'l String) -> Self {
-        Self {
+        let result = Self {
             input,
             position: 0,
             read_position: 0,
-        }
+            chr: input
+                .chars()
+                .nth(0)
+                .unwrap_or_else(|| panic!("Error: Empty file")),
+        };
+
+        return result;
     }
 
     fn read_char(&mut self) -> char {
@@ -97,23 +104,94 @@ impl<'l> Lexer<'l> {
         self.position = self.read_position;
         self.read_position += 1;
 
-        return ch;
+        self.chr = ch;
+        return self.chr;
     }
 
     fn next_token(&mut self) -> Token {
-        let tok = match self.read_char() {
-            '=' => Token::new(TokenType::Assign, String::from('=')),
-            '+' => Token::new(TokenType::Plus, String::from('+')),
-            ',' => Token::new(TokenType::Comma, String::from(',')),
-            ';' => Token::new(TokenType::Semicolon, String::from(';')),
-            '(' => Token::new(TokenType::LParen, String::from('(')),
-            ')' => Token::new(TokenType::RParen, String::from(')')),
-            '{' => Token::new(TokenType::LBrace, String::from('{')),
-            '}' => Token::new(TokenType::RBrace, String::from('}')),
-            _ => Token::new(TokenType::Eof, String::from("")),
+        self.skip_white_space();
+        let tok = match self.chr {
+            '=' => {
+                self.read_char();
+                Token::new(TokenType::Assign, String::from('='))
+            }
+            '+' => {
+                self.read_char();
+                Token::new(TokenType::Plus, String::from('+'))
+            }
+            ',' => {
+                self.read_char();
+                Token::new(TokenType::Comma, String::from(','))
+            }
+            ';' => {
+                self.read_char();
+                Token::new(TokenType::Semicolon, String::from(';'))
+            }
+            '(' => {
+                self.read_char();
+                Token::new(TokenType::LParen, String::from('('))
+            }
+            ')' => {
+                self.read_char();
+                Token::new(TokenType::RParen, String::from(')'))
+            }
+            '{' => {
+                self.read_char();
+                Token::new(TokenType::LBrace, String::from('{'))
+            }
+            '}' => {
+                self.read_char();
+                Token::new(TokenType::RBrace, String::from('}'))
+            }
+            '\0' => Token::new(TokenType::Eof, String::from("")),
+            _ => {
+                if self.chr.is_alphabetic() {
+                    let literal = self.read_identifier();
+                    let type_ = self.look_up_ident(&literal);
+                    Token::new(type_, literal)
+                } else if self.chr.is_numeric() {
+                    let literal = self.read_number();
+                    let type_ = TokenType::Int(literal.clone());
+                    Token::new(type_, literal)
+                } else {
+                    Token::new(TokenType::Illegal, String::from(self.chr))
+                }
+            }
         };
 
         return tok;
+    }
+
+    fn read_identifier(&mut self) -> String {
+        let position = self.position;
+        while self.chr.is_alphabetic() {
+            _ = self.read_char();
+        }
+
+        return self.input[position..self.position].to_string();
+    }
+
+    fn read_number(&mut self) -> String {
+        let position = self.position;
+        while self.chr.is_numeric() {
+            _ = self.read_char();
+        }
+
+        return self.input[position..self.position].to_string();
+    }
+
+    fn look_up_ident(&self, input: &str) -> TokenType {
+        match input {
+            "fun" => TokenType::Function,
+            "let" => TokenType::Let,
+            _ => TokenType::Ident(String::from(input)),
+        }
+    }
+
+    fn skip_white_space(&mut self) -> () {
+        while self.chr.is_whitespace() {
+            _ = self.read_char();
+        }
     }
 }
 
@@ -124,17 +202,53 @@ mod tests {
 
     #[test]
     fn test_next_token() {
-        let input = String::from("=+(){},;");
+        let input = String::from(
+            "let five = 5;
+let ten = 10;
+let add = fun(x, y) {
+x + y;
+};
+let result = add(five, ten);",
+        );
 
         let output = [
+            TokenType::Let,
+            TokenType::Ident(String::from("five")),
             TokenType::Assign,
-            TokenType::Plus,
+            TokenType::Int(String::from("5")),
+            TokenType::Semicolon,
+            TokenType::Let,
+            TokenType::Ident(String::from("ten")),
+            TokenType::Assign,
+            TokenType::Int(String::from("10")),
+            TokenType::Semicolon,
+            TokenType::Let,
+            TokenType::Ident(String::from("add")),
+            TokenType::Assign,
+            TokenType::Function,
             TokenType::LParen,
+            TokenType::Ident(String::from("x")),
+            TokenType::Comma,
+            TokenType::Ident(String::from("y")),
             TokenType::RParen,
             TokenType::LBrace,
-            TokenType::RBrace,
-            TokenType::Comma,
+            TokenType::Ident(String::from("x")),
+            TokenType::Plus,
+            TokenType::Ident(String::from("y")),
             TokenType::Semicolon,
+            TokenType::RBrace,
+            TokenType::Semicolon,
+            TokenType::Let,
+            TokenType::Ident(String::from("result")),
+            TokenType::Assign,
+            TokenType::Ident(String::from("add")),
+            TokenType::LParen,
+            TokenType::Ident(String::from("five")),
+            TokenType::Comma,
+            TokenType::Ident(String::from("ten")),
+            TokenType::RParen,
+            TokenType::Semicolon,
+            TokenType::Eof,
         ];
 
         let mut lexer = Lexer::new(&input);
