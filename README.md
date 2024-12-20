@@ -22,9 +22,9 @@ The toy language has a C-like syntax, supporting basic constructs like variable 
 
 ## Introduction
 
-The goal of this project is to provide an educational and practical implementation of a compiler written in Zig. Inspired by *Writing a Compiler in Go*, this project walks through the design and implementation of a C-like programming language, complete with a lexer, parser, abstract syntax tree (AST), and virtual machine (VM).
+The goal of this project is to provide an educational and practical implementation of a compiler written in Rust. Inspired by *Writing a Compiler in Go*, this project walks through the design and implementation of a C-like programming language, complete with a lexer, parser, abstract syntax tree (AST), and virtual machine (VM).
 
-Whether you're learning about compiler design or exploring Zig's capabilities, this repository offers a hands-on journey.
+Whether you're learning about compiler design or exploring Rust's capabilities, this repository offers a hands-on journey.
 
 ---
 
@@ -43,8 +43,8 @@ Whether you're learning about compiler design or exploring Zig's capabilities, t
 
 ### Prerequisites
 
-- [Zig](https://ziglang.org/download/): Ensure you have Zig installed (v0.10.0 or higher recommended).
-- A basic understanding of compiler design and Zig programming will be helpful.
+- [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html): Ensure you have the Rust tool chain installed.
+- A basic understanding of compiler design and Rust programming will be helpful.
 
 ### Installation
 
@@ -59,7 +59,7 @@ Whether you're learning about compiler design or exploring Zig's capabilities, t
    ```
 3. Run the tests:
    ```bash
-   cargo build 
+   cargo test 
    ```
 
 ---
@@ -70,10 +70,13 @@ To compile and execute code written in Beavieeer language, follow these steps:
 
 1. Write your source code in a `.be` file. Example:
    ```Rust
-   let x = 5;
-   let y = 10;
-   let result = x + y;
-   print(result);
+    let five = 5;
+    let ten = 10;
+    let add = fun(x, y) {
+    x + y;
+    };
+    let result = add(five, ten);
+    print(result);
    ```
 
 2. Run the compiler:
