@@ -129,7 +129,7 @@ impl<'l> Lexer<'l> {
             }
             '+' => {
                 self.read_char();
-                Token::new(TokenType::Assign, String::from('='))
+                Token::new(TokenType::Plus, String::from('+'))
             }
             '-' => {
                 self.read_char();
