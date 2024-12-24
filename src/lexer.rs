@@ -2,6 +2,8 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file
 
+//TODO 27
+
 use std::fmt;
 
 #[derive(Debug, PartialEq)]
@@ -22,6 +24,8 @@ pub enum TokenType {
     Slash,
     Lt,
     Gt,
+    Eq,
+    NotEq,
 
     // Delimiters
     Comma,
@@ -66,6 +70,8 @@ impl fmt::Display for TokenType {
             TokenType::Slash => write!(f, "Token Slash"),
             TokenType::Lt => write!(f, "Token Larger than"),
             TokenType::Gt => write!(f, "Token Greater than"),
+            TokenType::Eq => write!(f, "Token Eq"),
+            TokenType::NotEq => write!(f, "Token NotEq"),
             TokenType::Comma => write!(f, "Token Comma"),
             TokenType::Semicolon => write!(f, "Token Semicolon"),
             TokenType::LParen => write!(f, "Token LParen"),
@@ -107,35 +113,28 @@ impl<'l> Lexer<'l> {
         return result;
     }
 
-    fn read_char(&mut self) -> char {
-        let ch;
-        if self.read_position >= self.input.len() {
-            ch = '\0';
-        } else {
-            ch = self
-                .input
-                .chars()
-                .nth(self.read_position)
-                .unwrap_or_else(|| {
-                    panic!(
-                        "Error in read_char(). No character at index {}",
-                        self.read_position
-                    )
-                });
-        }
-        self.position = self.read_position;
-        self.read_position += 1;
-
-        self.chr = ch;
-        return self.chr;
-    }
-
     fn next_token(&mut self) -> Token {
         self.skip_white_space();
         let tok = match self.chr {
             '=' => {
-                self.read_char();
-                Token::new(TokenType::Assign, String::from('='))
+                if self.peek_char() == '=' {
+                    self.read_char();
+                    self.read_char();
+                    Token::new(TokenType::Eq, String::from("=="))
+                } else {
+                    self.read_char();
+                    Token::new(TokenType::Assign, String::from('='))
+                }
+            }
+            '!' => {
+                if self.peek_char() == '=' {
+                    self.read_char();
+                    self.read_char();
+                    Token::new(TokenType::NotEq, String::from("!="))
+                } else {
+                    self.read_char();
+                    Token::new(TokenType::Bang, String::from('!'))
+                }
             }
             '+' => {
                 self.read_char();
@@ -144,10 +143,6 @@ impl<'l> Lexer<'l> {
             '-' => {
                 self.read_char();
                 Token::new(TokenType::Minus, String::from('-'))
-            }
-            '!' => {
-                self.read_char();
-                Token::new(TokenType::Bang, String::from('!'))
             }
             '/' => {
                 self.read_char();
@@ -206,6 +201,45 @@ impl<'l> Lexer<'l> {
         };
 
         return tok;
+    }
+
+    fn read_char(&mut self) -> char {
+        let ch;
+        if self.read_position >= self.input.len() {
+            ch = '\0';
+        } else {
+            ch = self
+                .input
+                .chars()
+                .nth(self.read_position)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "Error in read_char(). No character at index {}",
+                        self.read_position
+                    )
+                });
+        }
+        self.position = self.read_position;
+        self.read_position += 1;
+
+        self.chr = ch;
+        return self.chr;
+    }
+
+    fn peek_char(&self) -> char {
+        if self.read_position >= self.input.len() {
+            '\0'
+        } else {
+            self.input
+                .chars()
+                .nth(self.read_position)
+                .unwrap_or_else(|| {
+                    panic!(
+                        "Error in peek_char(). No character at index {}",
+                        self.read_position
+                    )
+                })
+        }
     }
 
     fn read_identifier(&mut self) -> String {
@@ -267,7 +301,10 @@ if 5 < 10 {
     return true;
 } else {
     return false;
-}",
+}
+
+10 == 10;
+9 != 11;",
         );
 
         let output = [
@@ -334,6 +371,14 @@ if 5 < 10 {
             TokenType::False,
             TokenType::Semicolon,
             TokenType::RBrace,
+            TokenType::Int(String::from("10")),
+            TokenType::Eq,
+            TokenType::Int(String::from("10")),
+            TokenType::Semicolon,
+            TokenType::Int(String::from("9")),
+            TokenType::NotEq,
+            TokenType::Int(String::from("11")),
+            TokenType::Semicolon,
             TokenType::Eof,
         ];
 
@@ -341,7 +386,12 @@ if 5 < 10 {
 
         for test_case in output {
             let token = lexer.next_token();
-            assert_eq!(token._type, test_case);
+            if token._type != test_case {
+                panic!(
+                    "\nTest result is not equal to expected result {} != {}.\n",
+                    token._type, test_case
+                );
+            }
         }
     }
 }
