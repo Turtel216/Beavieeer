@@ -35,6 +35,11 @@ pub enum TokenType {
     // Keywords
     Function,
     Let,
+    True,
+    False,
+    If,
+    Else,
+    Return,
 }
 
 pub struct Token {
@@ -69,6 +74,11 @@ impl fmt::Display for TokenType {
             TokenType::RBrace => write!(f, "Token RBrace"),
             TokenType::Function => write!(f, "Token Function"),
             TokenType::Let => write!(f, "Token Let"),
+            TokenType::True => write!(f, "Token True"),
+            TokenType::False => write!(f, "Token False"),
+            TokenType::If => write!(f, "Token If"),
+            TokenType::Else => write!(f, "Token Else"),
+            TokenType::Return => write!(f, "Token Return"),
             TokenType::Ident(v) => write!(f, "Token Ident: {v}"),
             TokenType::Int(v) => write!(f, "Token Int: {v}"),
         }
@@ -220,6 +230,11 @@ impl<'l> Lexer<'l> {
         match input {
             "fun" => TokenType::Function,
             "let" => TokenType::Let,
+            "true" => TokenType::True,
+            "false" => TokenType::False,
+            "if" => TokenType::If,
+            "else" => TokenType::Else,
+            "return" => TokenType::Return,
             _ => TokenType::Ident(String::from(input)),
         }
     }
@@ -246,7 +261,13 @@ x + y;
 };
 let result = add(five, ten);
 !-/*5;
-5 < 10 > 5;",
+5 < 10 > 5;
+
+if 5 < 10 {
+    return true;
+} else {
+    return false;
+}",
         );
 
         let output = [
@@ -298,6 +319,21 @@ let result = add(five, ten);
             TokenType::Gt,
             TokenType::Int(String::from("5")),
             TokenType::Semicolon,
+            TokenType::If,
+            TokenType::Int(String::from("5")),
+            TokenType::Lt,
+            TokenType::Int(String::from("10")),
+            TokenType::LBrace,
+            TokenType::Return,
+            TokenType::True,
+            TokenType::Semicolon,
+            TokenType::RBrace,
+            TokenType::Else,
+            TokenType::LBrace,
+            TokenType::Return,
+            TokenType::False,
+            TokenType::Semicolon,
+            TokenType::RBrace,
             TokenType::Eof,
         ];
 
