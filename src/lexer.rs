@@ -16,6 +16,12 @@ pub enum TokenType {
     // Operators
     Assign,
     Plus,
+    Minus,
+    Bang,
+    Asterisk,
+    Slash,
+    Lt,
+    Gt,
 
     // Delimiters
     Comma,
@@ -46,9 +52,15 @@ impl fmt::Display for TokenType {
     fn fmt(&self, f: &mut fmt::Formatter) -> fmt::Result {
         match self {
             TokenType::Illegal => write!(f, "Token Illegal"),
-            TokenType::Assign => write!(f, "Token Assign"),
             TokenType::Eof => write!(f, "Token Eof"),
+            TokenType::Assign => write!(f, "Token Assign"),
+            TokenType::Minus => write!(f, "Token Minus"),
             TokenType::Plus => write!(f, "Token Plus"),
+            TokenType::Bang => write!(f, "Token Bang"),
+            TokenType::Asterisk => write!(f, "Token Asterisk"),
+            TokenType::Slash => write!(f, "Token Slash"),
+            TokenType::Lt => write!(f, "Token Larger than"),
+            TokenType::Gt => write!(f, "Token Greater than"),
             TokenType::Comma => write!(f, "Token Comma"),
             TokenType::Semicolon => write!(f, "Token Semicolon"),
             TokenType::LParen => write!(f, "Token LParen"),
@@ -117,7 +129,31 @@ impl<'l> Lexer<'l> {
             }
             '+' => {
                 self.read_char();
-                Token::new(TokenType::Plus, String::from('+'))
+                Token::new(TokenType::Assign, String::from('='))
+            }
+            '-' => {
+                self.read_char();
+                Token::new(TokenType::Minus, String::from('-'))
+            }
+            '!' => {
+                self.read_char();
+                Token::new(TokenType::Bang, String::from('!'))
+            }
+            '/' => {
+                self.read_char();
+                Token::new(TokenType::Slash, String::from('/'))
+            }
+            '*' => {
+                self.read_char();
+                Token::new(TokenType::Asterisk, String::from('*'))
+            }
+            '<' => {
+                self.read_char();
+                Token::new(TokenType::Lt, String::from('<'))
+            }
+            '>' => {
+                self.read_char();
+                Token::new(TokenType::Gt, String::from('>'))
             }
             ',' => {
                 self.read_char();
@@ -208,7 +244,9 @@ let ten = 10;
 let add = fun(x, y) {
 x + y;
 };
-let result = add(five, ten);",
+let result = add(five, ten);
+!-/*5;
+5 < 10 > 5;",
         );
 
         let output = [
@@ -247,6 +285,18 @@ let result = add(five, ten);",
             TokenType::Comma,
             TokenType::Ident(String::from("ten")),
             TokenType::RParen,
+            TokenType::Semicolon,
+            TokenType::Bang,
+            TokenType::Minus,
+            TokenType::Slash,
+            TokenType::Asterisk,
+            TokenType::Int(String::from("5")),
+            TokenType::Semicolon,
+            TokenType::Int(String::from("5")),
+            TokenType::Lt,
+            TokenType::Int(String::from("10")),
+            TokenType::Gt,
+            TokenType::Int(String::from("5")),
             TokenType::Semicolon,
             TokenType::Eof,
         ];
