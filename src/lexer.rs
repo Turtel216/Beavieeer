@@ -46,8 +46,9 @@ pub enum TokenType {
     Return,
 }
 
+#[derive(Debug)]
 pub struct Token {
-    _type: TokenType,
+    pub _type: TokenType,
     literal: String,
 }
 
@@ -113,7 +114,7 @@ impl<'l> Lexer<'l> {
         return result;
     }
 
-    fn next_token(&mut self) -> Token {
+    pub fn next_token(&mut self) -> Token {
         self.skip_white_space();
         let tok = match self.chr {
             '=' => {
