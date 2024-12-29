@@ -556,9 +556,9 @@ impl<'a> Parser<'a> {
 
 #[cfg(test)]
 mod tests {
-    use ast::*;
-    use lexer::Lexer;
-    use parser::Parser;
+    use crate::ast::*;
+    use crate::lexer::Lexer;
+    use crate::parser::Parser;
 
     fn check_parse_errors(parser: &mut Parser) {
         let errors = parser.get_errors();
@@ -1068,7 +1068,7 @@ return 993322;
     }
 
     #[test]
-    fun test_call_expr() {
+    fn test_call_expr() {
         let input = "add(1, 2 * 3, 4 + 5);";
 
         let mut parser = Parser::new(Lexer::new(input));

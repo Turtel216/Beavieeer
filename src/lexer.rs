@@ -204,8 +204,8 @@ impl<'a> Lexer<'a> {
 
 #[cfg(test)]
 mod tests {
-    use lexer::Lexer;
-    use token::Token;
+    use crate::lexer::Lexer;
+    use crate::token::Token;
 
     #[test]
     fn test_next_token() {
