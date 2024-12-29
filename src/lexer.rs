@@ -152,7 +152,7 @@ impl<'a> Lexer<'a> {
         let literal = &self.input[start_pos..self.pos];
 
         match literal {
-            "fn" => Token::Func,
+            "fun" => Token::Func,
             "let" => Token::Let,
             "true" => Token::Bool(true),
             "false" => Token::Bool(false),
@@ -212,7 +212,7 @@ mod tests {
         let input = r#"let five = 5;
 let ten = 10;
 
-let add = fn(x, y) {
+let add = fun(x, y) {
   x + y;
 };
 

@@ -1018,7 +1018,7 @@ return 993322;
 
     #[test]
     fn test_func_expr() {
-        let input = "fn(x, y) { x + y; }";
+        let input = "fun(x, y) { x + y; }";
 
         let mut parser = Parser::new(Lexer::new(input));
         let program = parser.parse();
@@ -1040,10 +1040,10 @@ return 993322;
     #[test]
     fn test_func_params() {
         let tests = vec![
-            ("fn() {};", vec![]),
-            ("fn(x) {};", vec![Ident(String::from("x"))]),
+            ("fun() {};", vec![]),
+            ("fun(x) {};", vec![Ident(String::from("x"))]),
             (
-                "fn(x, y, z) {};",
+                "fun(x, y, z) {};",
                 vec![
                     Ident(String::from("x")),
                     Ident(String::from("y")),
@@ -1068,7 +1068,7 @@ return 993322;
     }
 
     #[test]
-    fn test_call_expr() {
+    fun test_call_expr() {
         let input = "add(1, 2 * 3, 4 + 5);";
 
         let mut parser = Parser::new(Lexer::new(input));
