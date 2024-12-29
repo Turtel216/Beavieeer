@@ -2,9 +2,9 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file
 
-use crate::lexer;
-use crate::lexer::Token;
-use ast::*;
+use crate::ast::*;
+use crate::lexer::Lexer;
+use crate::token::Token;
 use std::fmt;
 
 #[derive(Debug, Clone)]
