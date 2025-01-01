@@ -15,6 +15,22 @@ use std::io::Write;
 use std::rc::Rc;
 
 const PROMPT: &str = ">> ";
+const STDLIB: &str = "
+let test = fun() {
+    print(2);
+};
+
+let map = fun(list, func) {
+    if (len(list) == 0) {
+        return [];
+    }
+    let head = first(list);
+    let tail = rest(list);
+    let mappedTail = map(tail, func);
+    let result = mappedTail + func(head);
+    return result;
+};
+";
 
 pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     let mut line = String::new();
@@ -31,6 +47,7 @@ pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     );
 
     let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
+    load_stdlib(&mut evaluator);
 
     println!("Welcome to the Beavieeer REPL!");
 
@@ -85,6 +102,7 @@ pub fn run_file(input: &String) -> () {
     );
 
     let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
+    load_stdlib(&mut evaluator);
 
     let mut parser = Parser::new(Lexer::new(&input));
     let program = parser.parse();
@@ -107,4 +125,18 @@ fn error_writting_to_stdout(err: &dyn Error) -> usize {
 
 fn error_reading_from_stdin(err: &dyn Error) -> usize {
     panic!("Error when reading from stdin: {}", err);
+}
+
+fn load_stdlib(eval: &mut Evaluator) -> () {
+    let mut parser = Parser::new(Lexer::new(STDLIB));
+    let program = parser.parse();
+    let errors = parser.get_errors();
+
+    if errors.len() > 0 {
+        for err in errors {
+            panic!("{}", err);
+        }
+    }
+
+    eval.eval(program);
 }

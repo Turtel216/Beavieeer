@@ -203,6 +203,13 @@ impl Evaluator {
                     Self::error(format!("type mismatch: {} {} {}", left_value, infix, right))
                 }
             }
+            Object::Array(left_value) => {
+                if let Object::Array(right_value) = right {
+                    self.eval_infix_array_expr(infix, left_value, right_value)
+                } else {
+                    Self::error(format!("type mismatch"))
+                }
+            }
             _ => Self::error(format!("unknown operator: {} {} {}", left, infix, right)),
         }
     }
@@ -263,6 +270,23 @@ impl Evaluator {
                 "unknown operator: {} {} {}",
                 left, infix, right
             ))),
+        }
+    }
+
+    fn eval_infix_array_expr(
+        &mut self,
+        infix: Infix,
+        left: Vec<Object>,
+        right: Vec<Object>,
+    ) -> Object {
+        match infix {
+            Infix::Plus => {
+                let mut result = Vec::with_capacity(left.len() + right.len());
+                result.extend(left.iter().cloned());
+                result.extend(right.iter().cloned());
+                Object::Array(result)
+            }
+            _ => Object::Error(String::from("Error combining lists")),
         }
     }
 

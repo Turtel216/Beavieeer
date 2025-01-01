@@ -111,6 +111,13 @@ print(last(nums));  // 4
 print(rest(nums));  // [2, 3, 4]
 ```
 
+Beavieeer also supports adding arrays
+```c
+let lstOne = [1, 2, 3, 4];
+let lstTwo = [5, 6, 7, 8];
+let lstCombined = lstOne + lstTwo // [1, 2 ,3 ,4 ,5 ,6 ,7 ,8]
+```
+
 ### Anonymous Functions
 ```c
 let square = fun(n) { n * n };
