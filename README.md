@@ -1,9 +1,5 @@
 # Beavieeer Language
 
-<p align="center">
-  <img src="imgs/Beavieeer-Mascot.jpg" alt="Beavieeer Logo" width="150" style="border-radius: 50%;">
-</p>
-
 ## About
 
 **Beavieeer** is a simple, C-like interpreted toy programming language written in Rust. This repository contains the implementation of the interpreter for Beavieeer. The language is designed to be easy to learn, with basic control structures, data types, and functional programming features. It supports both running scripts from `.be` files and an interactive REPL (Read-Eval-Print Loop).
