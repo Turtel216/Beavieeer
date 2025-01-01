@@ -3,14 +3,24 @@
 // license that can be found in the LICENSE file
 
 use beavieeer::repl;
-use std::io;
+use std::env;
+use std::fs;
+use std::io::stdin;
+use std::io::stdout;
 
 fn main() {
-    let stdin = io::stdin();
-    let mut stdin_lock = stdin.lock();
-
-    let stdout = io::stdout();
+    let args: Vec<String> = env::args().collect();
+    let stdout = stdout();
     let mut stdout_lock = stdout.lock();
 
-    repl::start(&mut stdin_lock, &mut stdout_lock);
+    if args.len() == 1 {
+        let mut stdin_lock = stdin().lock();
+        repl::start(&mut stdin_lock, &mut stdout_lock);
+    } else if args.len() == 2 {
+        let contents =
+            fs::read_to_string(args[1].clone()).expect("Should have been able to read the file");
+        repl::run_file(&contents);
+    } else {
+        println!("Invalid arguments");
+    }
 }

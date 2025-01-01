@@ -18,6 +18,7 @@
   - **Primitive types**: `Integer`, `String`, and `Boolean`.
   - **Complex types**: `Array` and `Hash`.
 - **Anonymous Functions**: Functions that can be defined without a name and passed around as values.
+- **Higher-order function**: A function that takes one or more functions as arguments
   
 ### Standard Library:
 

@@ -71,6 +71,36 @@ pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     }
 }
 
+pub fn run_file(input: &String) -> () {
+    let mut env = Env::from(new_builtins());
+
+    env.set(
+        String::from("print"),
+        &Object::Builtin(-1, |args| {
+            for arg in args {
+                println!("{}", arg);
+            }
+            Object::Null
+        }),
+    );
+
+    let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
+
+    let mut parser = Parser::new(Lexer::new(&input));
+    let program = parser.parse();
+    let errors = parser.get_errors();
+
+    if errors.len() > 0 {
+        for err in errors {
+            println!("{}", err);
+        }
+    }
+
+    if let Some(evaluated) = evaluator.eval(program) {
+        println!("{}\n", evaluated);
+    }
+}
+
 fn error_writting_to_stdout(err: &dyn Error) -> usize {
     panic!("Error when writting to stdout: {}", err);
 }
