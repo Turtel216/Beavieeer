@@ -20,6 +20,10 @@
 - **Anonymous Functions**: Functions that can be defined without a name and passed around as values.
   
 ### Standard Library:
+
+> [!NOTE]  
+> `map` `filter` `sort` and `fold` are not implemented yet.
+
 - **I/O**: 
   - `print` - Prints a value to the console.
 - **Array Operations**: 

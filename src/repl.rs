@@ -21,7 +21,7 @@ pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     let mut env = Env::from(new_builtins());
 
     env.set(
-        String::from("puts"),
+        String::from("print"),
         &Object::Builtin(-1, |args| {
             for arg in args {
                 println!("{}", arg);

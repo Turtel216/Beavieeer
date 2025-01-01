@@ -25,33 +25,39 @@ fn lang_len(args: Vec<Object>) -> Object {
 
 fn lang_first(args: Vec<Object>) -> Object {
     match &args[0] {
-        Object::Array(o) => if let Some(ao) = o.first() {
-            ao.clone()
-        } else {
-            Object::Null
-        },
+        Object::Array(o) => {
+            if let Some(ao) = o.first() {
+                ao.clone()
+            } else {
+                Object::Null
+            }
+        }
         o => Object::Error(format!("argument to `first` must be array. got {}", o)),
     }
 }
 
 fn lang_last(args: Vec<Object>) -> Object {
     match &args[0] {
-        Object::Array(o) => if let Some(ao) = o.last() {
-            ao.clone()
-        } else {
-            Object::Null
-        },
+        Object::Array(o) => {
+            if let Some(ao) = o.last() {
+                ao.clone()
+            } else {
+                Object::Null
+            }
+        }
         o => Object::Error(format!("argument to `last` must be array. got {}", o)),
     }
 }
 
 fn lang_rest(args: Vec<Object>) -> Object {
     match &args[0] {
-        Object::Array(o) => if o.len() > 0 {
-            Object::Array(o[1..].to_vec())
-        } else {
-            Object::Null
-        },
+        Object::Array(o) => {
+            if o.len() > 0 {
+                Object::Array(o[1..].to_vec())
+            } else {
+                Object::Null
+            }
+        }
         o => Object::Error(format!("argument to `rest` must be array. got {}", o)),
     }
 }
