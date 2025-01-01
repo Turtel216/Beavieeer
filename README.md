@@ -1,129 +1,141 @@
-# Beavieeer-Lang
+# Beavieeer Language
 
-Welcome to the **Beavieeer-Lang Project**, a compiler written in the [Rust programming language](https://www.rust-lang.org/) for a C-like toy programming language. This project takes concepts from the book [*Writing a Compiler in Go*](https://compilerbook.com/) and implements them using Rust, showcasing its low-level control and safety.
-
-The toy language has a C-like syntax, supporting basic constructs like variable declarations, arithmetic expressions, conditionals, and function calls. The goal is to build a working compiler that translates this language into bytecode, which can then be executed on a custom virtual machine (VM).
-
----
-
-## Table of Contents
-
-- [Introduction](#introduction)
-- [Features](#features)
-- [Getting Started](#getting-started)
-  - [Prerequisites](#prerequisites)
-  - [Installation](#installation)
-- [Usage](#usage)
-- [Project Structure](#project-structure)
-- [Contributing](#contributing)
-- [License](#license)
-
----
-
-## Introduction
-
-The goal of this project is to provide an educational and practical implementation of a compiler written in Rust. Inspired by *Writing a Compiler in Go*, this project walks through the design and implementation of a C-like programming language, complete with a lexer, parser, abstract syntax tree (AST), and virtual machine (VM).
-
-Whether you're learning about compiler design or exploring Rust's capabilities, this repository offers a hands-on journey.
+**Beavieeer** is a simple, C-like interpreted toy programming language written in Rust. This repository contains the implementation of the interpreter for Beavieeer. The language is designed to be easy to learn, with basic control structures, data types, and functional programming features. It supports both running scripts from `.be` files and an interactive REPL (Read-Eval-Print Loop).
 
 ---
 
 ## Features
 
-- **Lexer**: Tokenizes input source code into meaningful symbols.
-- **Parser**: Converts tokens into an Abstract Syntax Tree (AST).
-- **AST Evaluation**: Processes the AST to generate executable bytecode.
-- **Virtual Machine (VM)**: Executes bytecode instructions.
-- **Built-in Functions**: Supports basic built-in functionality.
-- **Error Handling**: Provides detailed syntax and runtime error messages.
+### Core Language Features:
+- **Control Structures**: `if` statements for conditional logic.
+- **Data Types**: 
+  - **Primitive types**: `Integer`, `String`, and `Boolean`.
+  - **Complex types**: `Array` and `Hash`.
+- **Anonymous Functions**: Functions that can be defined without a name and passed around as values.
+  
+### Standard Library:
+- **I/O**: 
+  - `print` - Prints a value to the console.
+- **Array Operations**: 
+  - `first` - Returns the first element of an array.
+  - `last` - Returns the last element of an array.
+  - `rest` - Returns all elements of an array except the first.
+  - `map` - Applies a function to each element of an array and returns a new array.
+  - `filter` - Filters an array based on a predicate function.
+  - `sort` - Sorts an array.
+- **Functional Utilities**: 
+  - `fold` - Reduces an array to a single value using a function.
+
+### Execution Modes:
+- **Script Mode**: Run Beavieeer programs from a file with the `.be` extension.
+- **Interactive REPL**: Explore and test Beavieeer code interactively. Exit the REPL by typing `:q`.
 
 ---
 
 ## Getting Started
 
 ### Prerequisites
-
-- [Cargo](https://doc.rust-lang.org/cargo/getting-started/installation.html): Ensure you have the Rust tool chain installed.
-- A basic understanding of compiler design and Rust programming will be helpful.
+- **Rust**: Ensure you have Rust installed. If not, install it using [Rust's official guide](https://www.rust-lang.org/tools/install).
 
 ### Installation
-
-1. Clone this repository:
+1. Clone the repository:
    ```bash
-   git clone https://github.com/your-username/Beavieeer.git
-   cd Beavieeer 
+   git clone https://github.com/Turtel216/Beavieeer.git
+   cd Beavieeer
    ```
 2. Build the project:
    ```bash
-   cargo build
+   cargo build --release
    ```
-3. Run the tests:
+3. Run the interpreter:
    ```bash
-   cargo test 
+   ./target/release/beavieeer
    ```
 
 ---
 
 ## Usage
 
-To compile and execute code written in Beavieeer language, follow these steps:
+### Script Mode
+To execute a Beavieeer script, create a file with the `.be` extension and run:
+```bash
+./beavieeer path/to/script.be
+```
 
-1. Write your source code in a `.be` file. Example:
-   ```Rust
-    let five = 5;
-    let ten = 10;
-    let add = fun(x, y) {
-    x + y;
-    };
-    let result = add(five, ten);
-    print(result);
-   ```
+Example script:
+```c
+let x = [1, 2, 3, 4, 5];
+let doubled = map(x, fun(n) { n * 2 });
+print(doubled);
+```
 
-2. Run the compiler:
-   ```bash
-   cargo run --path/to/source.be
-   ```
-
-3. The output of the program will be displayed in the terminal.
+### Interactive REPL
+Start the REPL:
+```bash
+./beavieeer
+```
+You can now write and execute Beavieeer code interactively. Exit the REPL by typing `:q`.
 
 ---
 
-## Project Structure
+## Language Syntax
 
+### Variables
+```c
+let x = 42;
+let name = "Beavieeer";
+let isAwesome = true;
 ```
-├── src/
-│   ├── lexer.rs          # Tokenizer implementation
-│   ├── parser.rs         # Parser implementation
-│   ├── ast.rs            # Abstract Syntax Tree structures
-│   ├── codegen.rs        # Bytecode generator
-│   ├── vm.rs             # Virtual Machine
-│   └── main.rs           # Entry point for the compiler
-└── README.md               # Project documentation
+
+### If Statements
+```c
+if (x > 10) {
+    print("x is greater than 10");
+} else {
+    print("x is less than or equal to 10");
+}
+```
+
+### Arrays
+```c
+let nums = [1, 2, 3, 4];
+print(first(nums)); // 1
+print(last(nums));  // 4
+print(rest(nums));  // [2, 3, 4]
+```
+
+### Anonymous Functions
+```c
+let square = fun(n) { n * n };
+print(map([1, 2, 3, 4], square)); // [1, 4, 9, 16]
+```
+
+### Hashes
+```c
+let person = {"name": "Alice", "age": 30};
+print(person["name"]); // Alice
 ```
 
 ---
 
 ## Contributing
+Contributions are welcome! Please open an issue or submit a pull request if you have ideas for improvements.
 
-Contributions are welcome! If you would like to improve this project, please:
-
+### Steps to Contribute
 1. Fork the repository.
-2. Create a new branch for your feature or bugfix:
+2. Create a new branch for your feature/fix:
    ```bash
-   git checkout -b feature/my-feature
+   git checkout -b feature-name
    ```
-3. Commit your changes:
-   ```bash
-   git commit -m "Add my feature"
-   ```
-4. Push your branch:
-   ```bash
-   git push origin feature/my-feature
-   ```
-5. Open a pull request.
+3. Commit your changes and push to your fork.
+4. Open a pull request to the `main` branch.
 
 ---
 
 ## License
-
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
+
+## Contact
+For any questions or suggestions, feel free to open an issue or contact the maintainer at `papakonstantinou.dm@gmail.com`.
