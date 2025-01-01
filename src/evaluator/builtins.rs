@@ -7,15 +7,15 @@ use std::collections::HashMap;
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
-    builtins.insert(String::from("len"), Object::Builtin(1, monkey_len));
-    builtins.insert(String::from("first"), Object::Builtin(1, monkey_first));
-    builtins.insert(String::from("last"), Object::Builtin(1, monkey_last));
-    builtins.insert(String::from("rest"), Object::Builtin(1, monkey_rest));
-    builtins.insert(String::from("push"), Object::Builtin(2, monkey_push));
+    builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
+    builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
+    builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
+    builtins.insert(String::from("rest"), Object::Builtin(1, lang_rest));
+    builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
     builtins
 }
 
-fn monkey_len(args: Vec<Object>) -> Object {
+fn lang_len(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::String(s) => Object::Int(s.len() as i64),
         Object::Array(o) => Object::Int(o.len() as i64),
@@ -23,7 +23,7 @@ fn monkey_len(args: Vec<Object>) -> Object {
     }
 }
 
-fn monkey_first(args: Vec<Object>) -> Object {
+fn lang_first(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => if let Some(ao) = o.first() {
             ao.clone()
@@ -34,7 +34,7 @@ fn monkey_first(args: Vec<Object>) -> Object {
     }
 }
 
-fn monkey_last(args: Vec<Object>) -> Object {
+fn lang_last(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => if let Some(ao) = o.last() {
             ao.clone()
@@ -45,7 +45,7 @@ fn monkey_last(args: Vec<Object>) -> Object {
     }
 }
 
-fn monkey_rest(args: Vec<Object>) -> Object {
+fn lang_rest(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => if o.len() > 0 {
             Object::Array(o[1..].to_vec())
@@ -56,7 +56,7 @@ fn monkey_rest(args: Vec<Object>) -> Object {
     }
 }
 
-fn monkey_push(args: Vec<Object>) -> Object {
+fn lang_push(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => {
             let mut arr = o.clone();

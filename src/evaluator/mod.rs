@@ -7,8 +7,8 @@ pub mod env;
 pub mod object;
 
 use crate::ast::*;
-use evaluator::env::*;
-use evaluator::object::*;
+use crate::evaluator::env::*;
+use crate::evaluator::object::*;
 use std::cell::RefCell;
 use std::collections::HashMap;
 use std::rc::Rc;
@@ -379,10 +379,10 @@ impl Evaluator {
 
 #[cfg(test)]
 mod tests {
-    use evaluator::builtins::new_builtins;
-    use evaluator::*;
-    use lexer::Lexer;
-    use parser::Parser;
+    use crate::evaluator::builtins::new_builtins;
+    use crate::evaluator::*;
+    use crate::lexer::Lexer;
+    use crate::parser::Parser;
 
     fn eval(input: &str) -> Option<Object> {
         Evaluator::new(Rc::new(RefCell::new(Env::from(new_builtins()))))
