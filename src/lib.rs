@@ -3,6 +3,7 @@
 // license that can be found in the LICENSE file
 
 pub mod ast;
+pub mod evaluator;
 pub mod lexer;
 pub mod parser;
 pub mod repl;
