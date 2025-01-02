@@ -3,16 +3,21 @@
 // license that can be found in the LICENSE file
 
 use crate::evaluator::object::*;
-use std::collections::HashMap;
+use std::{collections::HashMap, io};
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
+    builtins.insert(String::from("read"), Object::Builtin(1, lang_read));
     builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
     builtins.insert(String::from("rest"), Object::Builtin(1, lang_rest));
     builtins.insert(String::from("get"), Object::Builtin(2, lang_get));
     builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
+    builtins.insert(String::from("map"), Object::Builtin(2, lang_map));
+    builtins.insert(String::from("filter"), Object::Builtin(2, lang_filter));
+    builtins.insert(String::from("sort"), Object::Builtin(2, lang_fold));
+    builtins.insert(String::from("fold"), Object::Builtin(2, lang_fold));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
     builtins.insert(
         String::from("replaceString"),
@@ -175,4 +180,42 @@ fn lang_to_uppercase(args: Vec<Object>) -> Object {
             o
         )),
     }
+}
+
+// Read from stdin
+fn lang_read(args: Vec<Object>) -> Object {
+    return Object::Error(String::from("TODO: read is not implemented yet"));
+    //match &args[0] {
+    //    Object::String(s) => {
+    //        print!("{}", s);
+    //        match io::stdin().lines().next() {
+    //            Some(input) => Object::String(input.expect("Error reading from stdio")),
+    //            None => Object::Error(String::from("invalid sdtio input")),
+    //        }
+    //    }
+    //    o => Object::Error(format!(
+    //        "argument to `uppercase` must be a String. got {}",
+    //        o
+    //    )),
+    //}
+}
+
+// TODO
+fn lang_map(args: Vec<Object>) -> Object {
+    Object::Error(String::from("TODO: read is not implemented yet"))
+}
+
+// TODO
+fn lang_filter(args: Vec<Object>) -> Object {
+    Object::Error(String::from("TODO: filter is not implemented yet"))
+}
+
+// TODO
+fn lang_fold(args: Vec<Object>) -> Object {
+    Object::Error(String::from("TODO: fold is not implemented yet"))
+}
+
+// TODO
+fn lang_sort(args: Vec<Object>) -> Object {
+    Object::Error(String::from("TODO: sort is not implemented yet"))
 }
