@@ -69,6 +69,9 @@ fn lang_push(args: Vec<Object>) -> Object {
             arr.push(args[1].clone());
             Object::Array(arr)
         }
-        o => Object::Error(format!("argument to `push` must be array. got {}", o)),
+        o => {
+            let arr = vec![o.clone()];
+            Object::Array(arr)
+        }
     }
 }
