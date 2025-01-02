@@ -32,6 +32,13 @@
   - `sort` - Sorts an array.
 - **Functional Utilities**: 
   - `fold` - Reduces an array to a single value using a function.
+- **String Utilities**:
+  - `lowercase` - Returns the lowercase equivalent of the original String
+  - `uppercase` - Returns the lowercase equivalent of the original String
+  - `trim` - Returns a String with leading and trailing white space removed
+  - `replaceString` - Replaces all matches of a patterns with a String
+  - `replaceN` - Replaces the first N matches of a patterns with a String
+  - **More to be added**
 
 ### Execution Modes:
 - **Script Mode**: Run Beavieeer programs from a file with the `.be` extension.
@@ -88,14 +95,14 @@ You can now write and execute Beavieeer code interactively. Exit the REPL by typ
 ## Language Syntax
 
 ### Variables
-```c
+```kotlin
 let x = 42;
 let name = "Beavieeer";
 let isAwesome = true;
 ```
 
 ### If Statements
-```c
+```kotlin
 if (x > 10) {
     print("x is greater than 10");
 } else {
@@ -104,7 +111,7 @@ if (x > 10) {
 ```
 
 ### Arrays
-```c
+```kotlin
 let nums = [1, 2, 3, 4];
 print(first(nums)); // 1
 print(last(nums));  // 4
@@ -112,22 +119,44 @@ print(rest(nums));  // [2, 3, 4]
 ```
 
 Beavieeer also supports adding arrays
-```c
+
+```kotlin
 let lstOne = [1, 2, 3, 4];
 let lstTwo = [5, 6, 7, 8];
 let lstCombined = lstOne + lstTwo // [1, 2 ,3 ,4 ,5 ,6 ,7 ,8]
 ```
 
 ### Anonymous Functions
-```c
+```kotlin
 let square = fun(n) { n * n };
 print(map([1, 2, 3, 4], square)); // [1, 4, 9, 16]
 ```
 
 ### Hashes
-```c
+```kotlin
 let person = {"name": "Alice", "age": 30};
 print(person["name"]); // Alice
+```
+
+### Strings
+```kotlin
+let hello = "Hello, ";
+let world = "World!";
+let contact = hello + world;
+print(contact); // Hello, World!
+
+let upper = uppercase(contact);
+print(upper); // HELLO, WORLD!
+
+let lower = lowercase(upper);
+print(lower); // hello, world!
+
+let replaced = replaceString(lower, "world", "beavieeer");
+print(replaced); // hello, beavieeer!
+
+let hey = "Hey Hey Hey";
+let bye = replaceN(spam, "Hey", "Bye", 2);
+print(bye); // Bye Bye Hey
 ```
 
 ---

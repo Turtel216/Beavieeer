@@ -12,6 +12,23 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
     builtins.insert(String::from("rest"), Object::Builtin(1, lang_rest));
     builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
+    builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
+    builtins.insert(
+        String::from("replaceString"),
+        Object::Builtin(3, lang_replace_substring),
+    );
+    builtins.insert(
+        String::from("replaceN"),
+        Object::Builtin(4, lang_replace_n_substring),
+    );
+    builtins.insert(
+        String::from("lowercase"),
+        Object::Builtin(1, lang_to_lowercase),
+    );
+    builtins.insert(
+        String::from("uppercase"),
+        Object::Builtin(1, lang_to_uppercase),
+    );
     builtins
 }
 
@@ -73,5 +90,72 @@ fn lang_push(args: Vec<Object>) -> Object {
             let arr = vec![o.clone()];
             Object::Array(arr)
         }
+    }
+}
+
+// Replaces all substrings
+fn lang_replace_substring(args: Vec<Object>) -> Object {
+    match (&args[0], &args[1], &args[2]) {
+        (Object::String(s1), Object::String(s2), Object::String(s3)) => {
+            let new_string = s1.replace(s2, s3);
+            Object::String(new_string)
+        }
+        (o1, o2, o3) => Object::Error(format!(
+            "argument to `replaceString` must be a String, String, String. got {}, {}, {}",
+            o1, o2, o3
+        )),
+    }
+}
+
+// Replaces first N substrings
+fn lang_replace_n_substring(args: Vec<Object>) -> Object {
+    match (&args[0], &args[1], &args[2], &args[3]) {
+        (Object::String(s1), Object::String(s2), Object::String(s3), Object::Int(i)) => {
+            let new_string = s1.replacen(s2, s3, *i as usize);
+            Object::String(new_string)
+        }
+        (o1, o2, o3, o4) => Object::Error(format!(
+            "argument to `replaceN` must be a String, String, String, Int. got {}, {}, {}, {}",
+            o1, o2, o3, o4
+        )),
+    }
+}
+
+// trim String
+fn lang_trim(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::String(s) => {
+            let new_string = s.trim();
+            Object::String(new_string.to_string())
+        }
+        o => Object::Error(format!("argument to `trim` must be a String. got {}", o)),
+    }
+}
+
+// String to lowercase
+fn lang_to_lowercase(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::String(s) => {
+            let new_string = s.to_lowercase();
+            Object::String(new_string)
+        }
+        o => Object::Error(format!(
+            "argument to `lowercase` must be a String. got {}",
+            o
+        )),
+    }
+}
+
+// String to lowercase
+fn lang_to_uppercase(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::String(s) => {
+            let new_string = s.to_uppercase();
+            Object::String(new_string)
+        }
+        o => Object::Error(format!(
+            "argument to `uppercase` must be a String. got {}",
+            o
+        )),
     }
 }
