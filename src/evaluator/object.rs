@@ -1,6 +1,6 @@
 // Copyright 2024 Dimitrios Papakonstantinou. All rights reserved.
 // Use of this source code is governed by a MIT
-// license that can be found in the LICENSE file 
+// license that can be found in the LICENSE file
 
 use crate::ast::*;
 use crate::evaluator::env::*;
@@ -63,7 +63,7 @@ impl fmt::Display for Object {
                         result.push_str(&format!(", {}", s));
                     }
                 }
-                write!(f, "fn({}) {{ ... }}", result)
+                write!(f, "fun({}) {{ ... }}", result)
             }
             Object::Builtin(_, _) => write!(f, "[builtin function]"),
             Object::Null => write!(f, "null"),
