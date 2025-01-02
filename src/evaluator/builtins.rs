@@ -11,6 +11,7 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
     builtins.insert(String::from("rest"), Object::Builtin(1, lang_rest));
+    builtins.insert(String::from("get"), Object::Builtin(2, lang_get));
     builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
     builtins.insert(
@@ -76,6 +77,22 @@ fn lang_rest(args: Vec<Object>) -> Object {
             }
         }
         o => Object::Error(format!("argument to `rest` must be array. got {}", o)),
+    }
+}
+
+fn lang_get(args: Vec<Object>) -> Object {
+    match (&args[0], &args[1]) {
+        (Object::Array(o), Object::Int(i)) => {
+            if let Some(ao) = o.get(*i as usize) {
+                ao.clone()
+            } else {
+                Object::Null
+            }
+        }
+        (o1, o2) => Object::Error(format!(
+            "argument to `get` must be Array, Int. got {}, {}",
+            o1, o2
+        )),
     }
 }
 

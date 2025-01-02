@@ -27,6 +27,7 @@
   - `first` - Returns the first element of an array.
   - `last` - Returns the last element of an array.
   - `rest` - Returns all elements of an array except the first.
+  - `get` - Returns the element of an array specified by its index.
   - `map` - Applies a function to each element of an array and returns a new array.
   - `filter` - Filters an array based on a predicate function.
   - `sort` - Sorts an array.
@@ -182,4 +183,4 @@ This project is licensed under the MIT License. See the [LICENSE](LICENSE) file 
 ---
 
 ## Contact
-For any questions or suggestions, feel free to open an issue or contact the maintainer at `papakonstantinou.dm@gmail.com`.
+For any questions or suggestions, feel free to open an issue or cOntact the maintainer at `papakonstantinou.dm@gmail.com`.
