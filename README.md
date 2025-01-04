@@ -35,7 +35,7 @@
   - `fold` - Reduces an array to a single value using a function.
 - **String Utilities**:
   - `lowercase` - Returns the lowercase equivalent of the original String
-  - `uppercase` - Returns the lowercase equivalent of the original String
+  - `uppercase` - Returns the uppercase equivalent of the original String
   - `trim` - Returns a String with leading and trailing white space removed
   - `replaceString` - Replaces all matches of a patterns with a String
   - `replaceN` - Replaces the first N matches of a patterns with a String
@@ -78,10 +78,21 @@ To execute a Beavieeer script, create a file with the `.be` extension and run:
 ```
 
 Example script:
-```c
-let x = [1, 2, 3, 4, 5];
-let doubled = map(x, fun(n) { n * 2 });
-print(doubled);
+```kotlin
+let fibonacci = fun(x) {
+  if (x == 0) {
+    0;
+  } else {
+    if (x == 1) {
+      1;
+    } else {
+      fibonacci(x - 1) + fibonacci(x - 2);
+    }
+  }
+};
+
+let result = fibonacci(10);
+print(result);
 ```
 
 ### Interactive REPL
