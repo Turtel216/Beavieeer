@@ -39,6 +39,7 @@
   - `trim` - Returns a String with leading and trailing white space removed
   - `replaceString` - Replaces all matches of a patterns with a String
   - `replaceN` - Replaces the first N matches of a patterns with a String
+  - `explode` - Converts a string to an array. Each of the characters in the string is given an index that starts from 0
   - **More to be added**
 
 ### Execution Modes:

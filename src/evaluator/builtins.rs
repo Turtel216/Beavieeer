@@ -19,6 +19,7 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("sort"), Object::Builtin(2, lang_fold));
     builtins.insert(String::from("fold"), Object::Builtin(2, lang_fold));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
+    builtins.insert(String::from("explode"), Object::Builtin(1, lang_explode));
     builtins.insert(
         String::from("replaceString"),
         Object::Builtin(3, lang_replace_substring),
@@ -151,6 +152,16 @@ fn lang_trim(args: Vec<Object>) -> Object {
             Object::String(new_string.to_string())
         }
         o => Object::Error(format!("argument to `trim` must be a String. got {}", o)),
+    }
+}
+
+fn lang_explode(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::String(s) => {
+            let new_vec = s.chars().map(|c| Object::String(String::from(c))).collect();
+            Object::Array(new_vec)
+        }
+        o => Object::Error(format!("argument to `expload` must be a String. got {}", o)),
     }
 }
 
