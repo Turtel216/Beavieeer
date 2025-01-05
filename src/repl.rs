@@ -15,6 +15,16 @@ use std::io::Write;
 use std::rc::Rc;
 
 const PROMPT: &str = ">> ";
+const STAND_PRELUDE: &str = "
+let fold = fun(f, init, lst) {
+  if (len(lst) == 0) {
+    init
+  } else {
+    let newInit = f(init, first(lst));
+    fold(f, newInit, tail(lst));
+  }
+};
+";
 
 pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     let mut line = String::new();
@@ -31,6 +41,7 @@ pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
     );
 
     let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
+    load_prelude(&mut evaluator);
 
     println!("Welcome to the Beavieeer REPL!");
 
@@ -85,6 +96,7 @@ pub fn run_file(input: &String) -> () {
     );
 
     let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
+    load_prelude(&mut evaluator);
 
     let mut parser = Parser::new(Lexer::new(&input));
     let program = parser.parse();
@@ -107,4 +119,20 @@ fn error_writting_to_stdout(err: &dyn Error) -> usize {
 
 fn error_reading_from_stdin(err: &dyn Error) -> usize {
     panic!("Error when reading from stdin: {}", err);
+}
+
+fn load_prelude(evaluator: &mut Evaluator) -> () {
+    let mut parser = Parser::new(Lexer::new(STAND_PRELUDE));
+    let program = parser.parse();
+    let errors = parser.get_errors();
+
+    if errors.len() > 0 {
+        for err in errors {
+            println!("Prelude Error: {}", err);
+        }
+    }
+
+    if let Some(evaluated) = evaluator.eval(program) {
+        println!("{}\n", evaluated);
+    }
 }

@@ -19,14 +19,14 @@
 ### Standard Library:
 
 > [!NOTE]  
-> `map` `filter` `sort` and `fold` are not implemented yet.
+> `map` `filter` and `sort` are not implemented yet.
 
 - **I/O**: 
   - `print` - Prints a value to the console.
 - **Array Operations**: 
   - `first` - Returns the first element of an array.
   - `last` - Returns the last element of an array.
-  - `rest` - Returns all elements of an array except the first.
+  - `tail` - Returns all elements of an array except the first.
   - `get` - Returns the element of an array specified by its index.
   - `map` - Applies a function to each element of an array and returns a new array.
   - `filter` - Filters an array based on a predicate function.

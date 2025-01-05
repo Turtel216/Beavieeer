@@ -11,13 +11,12 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
-    builtins.insert(String::from("rest"), Object::Builtin(1, lang_rest));
+    builtins.insert(String::from("tail"), Object::Builtin(1, lang_rest));
     builtins.insert(String::from("get"), Object::Builtin(2, lang_get));
     builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
     builtins.insert(String::from("map"), Object::Builtin(2, lang_map));
     builtins.insert(String::from("filter"), Object::Builtin(2, lang_filter));
-    builtins.insert(String::from("sort"), Object::Builtin(2, lang_fold));
-    builtins.insert(String::from("fold"), Object::Builtin(2, lang_fold));
+    builtins.insert(String::from("sort"), Object::Builtin(2, lang_sort));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
     builtins.insert(String::from("explode"), Object::Builtin(1, lang_explode));
     builtins.insert(
@@ -219,11 +218,6 @@ fn lang_map(args: Vec<Object>) -> Object {
 // TODO
 fn lang_filter(args: Vec<Object>) -> Object {
     Object::Error(String::from("TODO: filter is not implemented yet"))
-}
-
-// TODO
-fn lang_fold(args: Vec<Object>) -> Object {
-    Object::Error(String::from("TODO: fold is not implemented yet"))
 }
 
 // TODO
