@@ -31,6 +31,7 @@
   - `map` - Applies a function to each element of an array and returns a new array.
   - `filter` - Filters an array based on a predicate function.
   - `sort` - Sorts an array.
+  - `reverse` - Reverses an array.
 - **Functional Utilities**: 
   - `fold` - Reduces an array to a single value using a function.
 - **String Utilities**:

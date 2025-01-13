@@ -3,7 +3,7 @@
 // license that can be found in the LICENSE file
 
 use crate::evaluator::object::*;
-use std::{collections::HashMap, io};
+use std::collections::HashMap;
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
@@ -17,6 +17,7 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("map"), Object::Builtin(2, lang_map));
     builtins.insert(String::from("filter"), Object::Builtin(2, lang_filter));
     builtins.insert(String::from("sort"), Object::Builtin(2, lang_sort));
+    builtins.insert(String::from("reverse"), Object::Builtin(1, lang_reverse));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
     builtins.insert(String::from("explode"), Object::Builtin(1, lang_explode));
     builtins.insert(
@@ -112,6 +113,17 @@ fn lang_push(args: Vec<Object>) -> Object {
             let arr = vec![o.clone()];
             Object::Array(arr)
         }
+    }
+}
+
+fn lang_reverse(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::Array(o) => {
+            let mut new_arr = o.clone();
+            new_arr.reverse();
+            Object::Array(new_arr)
+        }
+        o => Object::Error(format!("argument to `reverse` must be Array. got {}", o)),
     }
 }
 
