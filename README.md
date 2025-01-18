@@ -130,7 +130,7 @@ let nums = [1, 2, 3, 4];
 print(nums[1]); // 2
 print(first(nums)); // 1
 print(last(nums));  // 4
-print(rest(nums));  // [2, 3, 4]
+print(tail(nums));  // [2, 3, 4]
 ```
 
 Beavieeer also supports adding arrays
