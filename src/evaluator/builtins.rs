@@ -11,7 +11,7 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
-    builtins.insert(String::from("tail"), Object::Builtin(1, lang_rest));
+    builtins.insert(String::from("tail"), Object::Builtin(1, lang_tail));
     builtins.insert(String::from("get"), Object::Builtin(2, lang_get));
     builtins.insert(String::from("push"), Object::Builtin(2, lang_push));
     builtins.insert(String::from("map"), Object::Builtin(2, lang_map));
@@ -73,7 +73,7 @@ fn lang_last(args: Vec<Object>) -> Object {
     }
 }
 
-fn lang_rest(args: Vec<Object>) -> Object {
+fn lang_tail(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => {
             if o.len() > 0 {
@@ -82,7 +82,7 @@ fn lang_rest(args: Vec<Object>) -> Object {
                 Object::Null
             }
         }
-        o => Object::Error(format!("argument to `rest` must be array. got {}", o)),
+        o => Object::Error(format!("argument to `tail` must be array. got {}", o)),
     }
 }
 
@@ -109,10 +109,7 @@ fn lang_push(args: Vec<Object>) -> Object {
             arr.push(args[1].clone());
             Object::Array(arr)
         }
-        o => {
-            let arr = vec![o.clone()];
-            Object::Array(arr)
-        }
+        o => Object::Error(format!("argument to `push` must be array. got {}", o)),
     }
 }
 

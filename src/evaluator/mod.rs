@@ -802,9 +802,9 @@ addTwo(2);
                     "argument to `last` must be array. got 1",
                 ))),
             ),
-            // rest
+            // tail
             (
-                "rest([1, 2, 3, 4])",
+                "tail([1, 2, 3, 4])",
                 Some(Object::Array(vec![
                     Object::Int(2),
                     Object::Int(3),
@@ -812,27 +812,27 @@ addTwo(2);
                 ])),
             ),
             (
-                "rest([2, 3, 4])",
+                "tail([2, 3, 4])",
                 Some(Object::Array(vec![Object::Int(3), Object::Int(4)])),
             ),
-            ("rest([4])", Some(Object::Array(vec![]))),
-            ("rest([])", Some(Object::Null)),
+            ("tail([4])", Some(Object::Array(vec![]))),
+            ("tail([])", Some(Object::Null)),
             (
-                "rest([], [])",
+                "tail([], [])",
                 Some(Object::Error(String::from(
                     "wrong number of arguments. got=2, want=1",
                 ))),
             ),
             (
-                "rest(\"string\")",
+                "tail(\"string\")",
                 Some(Object::Error(String::from(
-                    "argument to `rest` must be array. got string",
+                    "argument to `tail` must be array. got string",
                 ))),
             ),
             (
-                "rest(1)",
+                "tail(1)",
                 Some(Object::Error(String::from(
-                    "argument to `rest` must be array. got 1",
+                    "argument to `tail` must be array. got 1",
                 ))),
             ),
             // push
