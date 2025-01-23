@@ -233,3 +233,85 @@ fn lang_filter(args: Vec<Object>) -> Object {
 fn lang_sort(args: Vec<Object>) -> Object {
     Object::Error(String::from("TODO: sort is not implemented yet"))
 }
+
+#[test]
+fn test_lang_len_buildin() {
+    let input = vec![Object::Array(vec![Object::Int(2), Object::Int(2)])];
+    match lang_len(input) {
+        Object::Int(i) => assert_eq!(i, 2),
+        o => panic!("lang_len did return {} instead of Int", o),
+    };
+}
+
+#[test]
+fn test_lang_first_buildin_normal_array() {
+    let input = vec![Object::Array(vec![
+        Object::Int(1),
+        Object::Int(2),
+        Object::Int(3),
+    ])];
+
+    match lang_first(input) {
+        Object::Int(i) => assert_eq!(i, 1),
+        o => panic!("Expected Int got {} instead", o),
+    };
+}
+
+#[test]
+fn test_lang_first_buildin_empty_array() {
+    let input = vec![Object::Array(Vec::new())];
+
+    match lang_first(input) {
+        Object::Null => (),
+        o => panic!("Expected Null from the empty list. Got {} instead", o),
+    };
+}
+
+#[test]
+fn test_lang_last_buildin_normal_array() {
+    let input = vec![Object::Array(vec![
+        Object::Int(1),
+        Object::Int(2),
+        Object::Int(3),
+    ])];
+
+    match lang_last(input) {
+        Object::Int(i) => assert_eq!(i, 3),
+        o => panic!("Expected Int got {} instead", o),
+    };
+}
+
+#[test]
+fn test_lang_last_buildin_empty_array() {
+    let input = vec![Object::Array(Vec::new())];
+
+    match lang_last(input) {
+        Object::Null => (),
+        o => panic!("Expected Null from the empty list. Got {} instead", o),
+    };
+}
+
+#[test]
+fn test_lang_tail_buildin_normal_array() {
+    let input = vec![Object::Array(vec![
+        Object::Int(1),
+        Object::Int(2),
+        Object::Int(3),
+    ])];
+
+    let input_tail = Object::Array(vec![Object::Int(2), Object::Int(3)]);
+
+    match lang_tail(input) {
+        o => assert_eq!(input_tail, o),
+    };
+}
+
+#[test]
+fn test_lang_tail_buildin_empty_array() {
+    let input = vec![Object::Array(Vec::new())];
+
+    match lang_last(input) {
+        Object::Null => (),
+        o => panic!("Expected Null from the empty list. Got {} instead", o),
+    };
+}
