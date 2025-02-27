@@ -169,6 +169,10 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses a `let` statement.
+    ///
+    /// A `let` statement assigns a value to an identifier.
+    /// This function ensures proper syntax and returns a `Stmt::Let` variant if parsing is successful.
     fn parse_let_stmt(&mut self) -> Option<Stmt> {
         match &self.next_token {
             Token::Ident(_) => self.bump(),
@@ -198,6 +202,10 @@ impl<'a> Parser<'a> {
         Some(Stmt::Let(name, expr))
     }
 
+    /// Parses a `return` statement.
+    ///
+    /// A `return` statement is used to return a value from a function.
+    /// This function ensures proper syntax and returns a `Stmt::Return` variant if parsing is successful.
     fn parse_return_stmt(&mut self) -> Option<Stmt> {
         self.bump();
 
@@ -213,6 +221,10 @@ impl<'a> Parser<'a> {
         Some(Stmt::Return(expr))
     }
 
+    /// Parses an expression statement.
+    ///
+    /// Expression statements evaluate expressions, which may produce side effects.
+    /// If the next token is a semicolon, it is consumed.
     fn parse_expr_stmt(&mut self) -> Option<Stmt> {
         match self.parse_expr(Precedence::Lowest) {
             Some(expr) => {
@@ -225,6 +237,10 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an expression with a given precedence.
+    ///
+    /// This function first parses a prefix expression if applicable,
+    /// then processes infix expressions based on precedence rules.
     fn parse_expr(&mut self, precedence: Precedence) -> Option<Expr> {
         // prefix
         let mut left = match self.current_token {
@@ -244,7 +260,6 @@ impl<'a> Parser<'a> {
             }
         };
 
-        // infix
         while !self.next_token_is(&Token::Semicolon) && precedence < self.next_token_precedence() {
             match self.next_token {
                 Token::Plus
@@ -275,6 +290,9 @@ impl<'a> Parser<'a> {
         left
     }
 
+    /// Parses an identifier token.
+    ///
+    /// Returns an `Ident` if the current token is an identifier.
     fn parse_ident(&mut self) -> Option<Ident> {
         match self.current_token {
             Token::Ident(ref mut ident) => Some(Ident(ident.clone())),
@@ -282,6 +300,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an identifier expression.
+    ///
+    /// Wraps an identifier into an `Expr::Ident` variant.
     fn parse_ident_expr(&mut self) -> Option<Expr> {
         match self.parse_ident() {
             Some(ident) => Some(Expr::Ident(ident)),
@@ -289,6 +310,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an integer literal expression.
+    ///
+    /// Wraps an integer token into an `Expr::Literal(Literal::Int)` variant.
     fn parse_int_expr(&mut self) -> Option<Expr> {
         match self.current_token {
             Token::Int(ref mut int) => Some(Expr::Literal(Literal::Int(int.clone()))),
@@ -296,6 +320,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses a string literal expression.
+    ///
+    /// Wraps a string token into an `Expr::Literal(Literal::String)` variant.
     fn parse_string_expr(&mut self) -> Option<Expr> {
         match self.current_token {
             Token::String(ref mut s) => Some(Expr::Literal(Literal::String(s.clone()))),
@@ -303,6 +330,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses a boolean literal expression.
+    ///
+    /// Converts a boolean token into an `Expr::Literal(Literal::Bool)` variant.
     fn parse_bool_expr(&mut self) -> Option<Expr> {
         match self.current_token {
             Token::Bool(value) => Some(Expr::Literal(Literal::Bool(value == true))),
@@ -310,6 +340,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an array literal expression.
+    ///
+    /// Parses a list of expressions enclosed in brackets and returns an `Expr::Literal(Literal::Array)`.
     fn parse_array_expr(&mut self) -> Option<Expr> {
         match self.parse_expr_list(Token::Rbracket) {
             Some(list) => Some(Expr::Literal(Literal::Array(list))),
@@ -317,6 +350,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses a hash (dictionary) expression.
+    ///
+    /// Parses key-value pairs enclosed in braces and returns an `Expr::Literal(Literal::Hash)`.
     fn parse_hash_expr(&mut self) -> Option<Expr> {
         let mut pairs = Vec::new();
 
@@ -353,6 +389,9 @@ impl<'a> Parser<'a> {
         Some(Expr::Literal(Literal::Hash(pairs)))
     }
 
+    /// Parses a list of expressions separated by commas.
+    ///
+    /// Used for function arguments, array elements, etc.
     fn parse_expr_list(&mut self, end: Token) -> Option<Vec<Expr>> {
         let mut list = vec![];
 
@@ -385,6 +424,9 @@ impl<'a> Parser<'a> {
         Some(list)
     }
 
+    /// Parses a prefix expression.
+    ///
+    /// Handles operators such as `!`, `-`, and `+`.
     fn parse_prefix_expr(&mut self) -> Option<Expr> {
         let prefix = match self.current_token {
             Token::Bang => Prefix::Not,
@@ -401,6 +443,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an infix expression.
+    ///
+    /// Handles binary operations like `+`, `-`, `*`, `/`, `==`, `!=`, `<`, `<=`, `>`, `>=`.
     fn parse_infix_expr(&mut self, left: Expr) -> Option<Expr> {
         let infix = match self.current_token {
             Token::Plus => Infix::Plus,
@@ -426,6 +471,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an index expression (array indexing).
+    ///
+    /// Example: `array[0]`.
     fn parse_index_expr(&mut self, left: Expr) -> Option<Expr> {
         self.bump();
 
@@ -441,6 +489,9 @@ impl<'a> Parser<'a> {
         Some(Expr::Index(Box::new(left), Box::new(index)))
     }
 
+    /// Parses a grouped expression enclosed in parentheses.
+    ///
+    /// Ensures the expression is correctly enclosed.
     fn parse_grouped_expr(&mut self) -> Option<Expr> {
         self.bump();
 
@@ -453,6 +504,9 @@ impl<'a> Parser<'a> {
         }
     }
 
+    /// Parses an `if` expression.
+    ///
+    /// Handles optional `else` branches.
     fn parse_if_expr(&mut self) -> Option<Expr> {
         if !self.expect_next_token(Token::Lparen) {
             return None;
@@ -489,6 +543,9 @@ impl<'a> Parser<'a> {
         })
     }
 
+    /// Parses a function literal expression.
+    ///
+    /// Parses function parameters and body enclosed in braces.
     fn parse_func_expr(&mut self) -> Option<Expr> {
         if !self.expect_next_token(Token::Lparen) {
             return None;
@@ -509,6 +566,9 @@ impl<'a> Parser<'a> {
         })
     }
 
+    /// Parses function parameters.
+    ///
+    /// Extracts identifiers from a parameter list.
     fn parse_func_params(&mut self) -> Option<Vec<Ident>> {
         let mut params = vec![];
 
@@ -541,6 +601,9 @@ impl<'a> Parser<'a> {
         Some(params)
     }
 
+    /// Parses a function call expression.
+    ///
+    /// Parses arguments and constructs an `Expr::Call`.
     fn parse_call_expr(&mut self, func: Expr) -> Option<Expr> {
         let args = match self.parse_expr_list(Token::Rparen) {
             Some(args) => args,
@@ -1528,3 +1591,4 @@ return 993322;
         }
     }
 }
+
