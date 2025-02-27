@@ -21,22 +21,22 @@
 - **I/O**: 
   - `print` - Prints a value to the console.
 - **List Operations**: 
-  - `first` - Returns the first element of an list.
-  - `last` - Returns the last element of an list.
-  - `tail` - Returns all elements of an list except the first.
-  - `get` - Returns the element of an list specified by its index.
-  - `map` - Applies a function to each element of an list and returns a new list.
-  - `filter` - Filters an list based on a predicate function and returns a new (filtered)list.
-  - `reverse` - Reverses an list.
+  - `first` - Returns the first element of a list.
+  - `last` - Returns the last element of a list.
+  - `tail` - Returns all elements of a list except the first.
+  - `get` - Returns the element of a list specified by its index.
+  - `map` - Applies a function to each element of a list and returns a new list.
+  - `filter` - Filters a list based on a predicate function and returns a new (filtered)list.
+  - `reverse` - Reverses a list.
 - **Functional Utilities**: 
-  - `fold` - Reduces an list to a single value using a function.
+  - `fold` - Reduces a list to a single value using a function.
 - **String Utilities**:
   - `lowercase` - Returns the lowercase equivalent of the original String
   - `uppercase` - Returns the uppercase equivalent of the original String
   - `trim` - Returns a String with leading and trailing white space removed
-  - `replaceString` - Replaces all matches of a patterns with a String
-  - `replaceN` - Replaces the first N matches of a patterns with a String
-  - `explode` - Converts a string to an list. Each of the characters in the string is given an index that starts from 0
+  - `replaceString` - Replaces all matches of a pattern with a String
+  - `replaceN` - Replaces the first N matches of a pattern with a String
+  - `explode` - Converts a string to a list. Each of the characters in the string is given an index that starts from 0
   - **More to be added**
 
 ### Execution Modes:
