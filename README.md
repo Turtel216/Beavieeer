@@ -124,6 +124,13 @@ if (x > 10) {
 }
 ```
 
+### If Expressions
+```kotlin
+let x = 1;
+let y = if (x == 2) { 2 } else { 1 };
+print(y); // 1
+```
+
 ### Arrays
 ```kotlin
 let nums = [1, 2, 3, 4];
