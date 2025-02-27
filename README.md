@@ -12,33 +12,31 @@
 - **Control Structures**: `if` statements for conditional logic.
 - **Data Types**: 
   - **Primitive types**: `Integer`, `String`, and `Boolean`.
-  - **Complex types**: `Array` and `Hash`.
+  - **Complex types**: `List` and `Hash`.
 - **Anonymous Functions**: Functions that can be defined without a name and passed around as values.
 - **Higher-order function**: A function that takes one or more functions as arguments
   
 ### Standard Library:
 
-> [!NOTE]  
-
 - **I/O**: 
   - `print` - Prints a value to the console.
-- **Array Operations**: 
-  - `first` - Returns the first element of an array.
-  - `last` - Returns the last element of an array.
-  - `tail` - Returns all elements of an array except the first.
-  - `get` - Returns the element of an array specified by its index.
-  - `map` - Applies a function to each element of an array and returns a new array.
-  - `filter` - Filters an array based on a predicate function and returns a new (filtered)array.
-  - `reverse` - Reverses an array.
+- **List Operations**: 
+  - `first` - Returns the first element of an list.
+  - `last` - Returns the last element of an list.
+  - `tail` - Returns all elements of an list except the first.
+  - `get` - Returns the element of an list specified by its index.
+  - `map` - Applies a function to each element of an list and returns a new list.
+  - `filter` - Filters an list based on a predicate function and returns a new (filtered)list.
+  - `reverse` - Reverses an list.
 - **Functional Utilities**: 
-  - `fold` - Reduces an array to a single value using a function.
+  - `fold` - Reduces an list to a single value using a function.
 - **String Utilities**:
   - `lowercase` - Returns the lowercase equivalent of the original String
   - `uppercase` - Returns the uppercase equivalent of the original String
   - `trim` - Returns a String with leading and trailing white space removed
   - `replaceString` - Replaces all matches of a patterns with a String
   - `replaceN` - Replaces the first N matches of a patterns with a String
-  - `explode` - Converts a string to an array. Each of the characters in the string is given an index that starts from 0
+  - `explode` - Converts a string to an list. Each of the characters in the string is given an index that starts from 0
   - **More to be added**
 
 ### Execution Modes:
@@ -129,7 +127,7 @@ let y = if (x == 2) { 2 } else { 1 };
 print(y); // 1
 ```
 
-### Arrays
+### List
 ```kotlin
 let nums = [1, 2, 3, 4];
 print(nums[1]); // 2
@@ -138,7 +136,7 @@ print(last(nums));  // 4
 print(tail(nums));  // [2, 3, 4]
 ```
 
-Beavieeer also supports adding arrays
+Beavieeer also supports adding lists
 
 ```kotlin
 let lstOne = [1, 2, 3, 4];
