@@ -179,6 +179,15 @@ print(bye); // Bye Bye Hey
 
 ---
 
+## Future Feautes
+
+- [ ] `read` buildin function for reading from stdin
+- [ ] `import` buildin for importing other Beavieeer files.
+- [ ] **file utility** functions for reading and writing to files.
+- [ ] `parseInt` buildin function for parsing a **String** into an **Int**
+
+---
+
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request if you have ideas for improvements.
 
