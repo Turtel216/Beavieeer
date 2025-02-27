@@ -19,7 +19,6 @@
 ### Standard Library:
 
 > [!NOTE]  
-> `filter` and `sort` are not implemented yet.
 
 - **I/O**: 
   - `print` - Prints a value to the console.
@@ -29,8 +28,7 @@
   - `tail` - Returns all elements of an array except the first.
   - `get` - Returns the element of an array specified by its index.
   - `map` - Applies a function to each element of an array and returns a new array.
-  - `filter` - Filters an array based on a predicate function.
-  - `sort` - Sorts an array.
+  - `filter` - Filters an array based on a predicate function and returns a new (filtered)array.
   - `reverse` - Reverses an array.
 - **Functional Utilities**: 
   - `fold` - Reduces an array to a single value using a function.
