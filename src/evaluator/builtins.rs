@@ -2,8 +2,10 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file
 
-use crate::evaluator::object::*;
-use std::collections::HashMap;
+use crate::{ast::Ident, evaluator::object::*};
+use std::{cell::RefCell, collections::HashMap, rc::Rc};
+
+use super::{Env, Evaluator};
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
@@ -219,9 +221,64 @@ fn lang_read(args: Vec<Object>) -> Object {
     //}
 }
 
-// TODO
 fn lang_map(args: Vec<Object>) -> Object {
-    Object::Error(String::from("TODO: read is not implemented yet"))
+    if args.len() != 2 {
+        return Object::Error(format!(
+            "wrong number of arguments to map: got={}, want=2",
+            args.len()
+        ));
+    }
+
+    match (&args[0], &args[1]) {
+        (Object::Array(arr), Object::Func(params, body, env)) => {
+            let mut new_array: Vec<Object> = Vec::new();
+
+            // We need to make sure the function accepts one argument
+            if params.len() != 1 {
+                return Object::Error(format!(
+                    "map function expects a function with exactly one parameter, got {} parameters",
+                    params.len()
+                ));
+            }
+
+            for item in arr {
+                // Create a new environment for each function call, with the closure env as outer
+                let mut scoped_env = Env::new_with_outer(Rc::clone(env));
+
+                // Bind the current array item to the function's parameter
+                let Ident(param_name) = params[0].clone();
+                scoped_env.set(param_name, item);
+
+                // Create a new evaluator with this scoped environment
+                let mut evaluator = Evaluator::new(Rc::new(RefCell::new(scoped_env)));
+
+                // Evaluate the function body
+                match evaluator.eval_block_stmt(body.clone()) {
+                    Some(Object::ReturnValue(value)) => new_array.push(*value),
+                    Some(obj) => {
+                        if let Object::Error(_) = obj {
+                            return obj;
+                        }
+                        new_array.push(obj);
+                    }
+                    None => new_array.push(Object::Null),
+                }
+            }
+
+            Object::Array(new_array)
+        }
+        (Object::Array(_), Object::Builtin(_, _)) => Object::Error(format!(
+            "cannot use builtin functions with map yet; use a function literal"
+        )),
+        (Object::Array(_), not_func) => Object::Error(format!(
+            "second argument to `map` must be a function, got {}",
+            not_func
+        )),
+        (not_array, _) => Object::Error(format!(
+            "first argument to `map` must be an array, got {}",
+            not_array
+        )),
+    }
 }
 
 // TODO

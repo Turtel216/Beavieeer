@@ -19,7 +19,7 @@
 ### Standard Library:
 
 > [!NOTE]  
-> `map` `filter` and `sort` are not implemented yet.
+> `filter` and `sort` are not implemented yet.
 
 - **I/O**: 
   - `print` - Prints a value to the console.
