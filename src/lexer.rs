@@ -57,11 +57,26 @@ impl<'a> Lexer<'a> {
         self.nextch() == ch
     }
 
-    /// Skips over whitespace characters (spaces and tabs).
+    /// Skips over whitespace characters (spaces and tabs) and C++ style comments.
     fn skip_whitespace(&mut self) {
         loop {
             match self.ch {
                 b' ' | b'\t' => self.read_char(),
+                b'/' => {
+                    if self.nextch() == b'/' {
+                        // Skip the current '/' and the next '/'
+                        self.read_char();
+                        self.read_char();
+
+                        // Continue reading until end of line or EOF
+                        while self.ch != b'\n' && self.ch != 0 {
+                            self.read_char();
+                        }
+                    } else {
+                        // Not a comment, just a single '/' character
+                        break;
+                    }
+                }
                 _ => break,
             }
         }
