@@ -10,8 +10,8 @@ use crate::lexer::Lexer;
 use crate::parser::Parser;
 use std::cell::RefCell;
 use std::error::Error;
-use std::io::BufRead;
 use std::io::Write;
+use std::io::{stdin, BufRead};
 use std::rc::Rc;
 
 const PROMPT: &str = ">> ";
@@ -26,8 +26,9 @@ let fold = fun(f, init, lst) {
 };
 ";
 
-pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
+pub fn start(output: &mut dyn Write) {
     let mut line = String::new();
+    let mut lang_input = String::new();
     let mut env = Env::from(new_builtins());
 
     env.set(
@@ -49,8 +50,9 @@ pub fn start(input: &mut dyn BufRead, output: &mut dyn Write) {
         write!(output, "{}", PROMPT).unwrap();
         output.flush().unwrap();
         line.clear();
+        lang_input.clear();
 
-        let bytes_read = input.read_line(&mut line).unwrap();
+        let bytes_read = read_from_stdin(&mut line);
         if bytes_read == 0 {
             return; // End of input
         }
@@ -111,6 +113,12 @@ pub fn run_file(input: &String) -> () {
     if let Some(evaluated) = evaluator.eval(program) {
         println!("{}\n", evaluated);
     }
+}
+
+// TODO: find a more efficient method. Dont call stdin().lock() on every function call
+pub fn read_from_stdin(line: &mut String) -> usize {
+    let mut input = stdin().lock();
+    input.read_line(line).unwrap()
 }
 
 fn error_writting_to_stdout(err: &dyn Error) -> usize {

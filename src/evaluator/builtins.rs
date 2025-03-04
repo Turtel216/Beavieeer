@@ -2,14 +2,16 @@
 // Use of this source code is governed by a MIT
 // license that can be found in the LICENSE file
 
+use crate::repl::read_from_stdin;
 use crate::{ast::Ident, evaluator::object::*};
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use super::{Env, Evaluator};
+use std::io::{stdin, BufRead};
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
-    builtins.insert(String::from("read"), Object::Builtin(1, lang_read));
+    builtins.insert(String::from("read"), Object::Builtin(0, lang_read));
     builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
@@ -203,22 +205,14 @@ fn lang_to_uppercase(args: Vec<Object>) -> Object {
     }
 }
 
-// Read from stdin
-fn lang_read(args: Vec<Object>) -> Object {
-    return Object::Error(String::from("TODO: read is not implemented yet"));
-    //match &args[0] {
-    //    Object::String(s) => {
-    //        print!("{}", s);
-    //        match io::stdin().lines().next() {
-    //            Some(input) => Object::String(input.expect("Error reading from stdio")),
-    //            None => Object::Error(String::from("invalid sdtio input")),
-    //        }
-    //    }
-    //    o => Object::Error(format!(
-    //        "argument to `uppercase` must be a String. got {}",
-    //        o
-    //    )),
-    //}
+// Modify the 'read' builtin to use a function pointer
+fn lang_read(_args: Vec<Object>) -> Object {
+    // Create a handle to standard input
+    let mut input = String::new();
+
+    // Read a line from stdin
+    read_from_stdin(&mut input);
+    Object::String(input.trim().to_string())
 }
 
 fn lang_map(args: Vec<Object>) -> Object {
