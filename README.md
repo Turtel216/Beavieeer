@@ -35,6 +35,7 @@
   - `lowercase` - Returns the lowercase equivalent of the original String
   - `uppercase` - Returns the uppercase equivalent of the original String
   - `trim` - Returns a String with leading and trailing white space removed
+  - `parseNumber` - Converts a String into a number
   - `replaceString` - Replaces all matches of a pattern with a String
   - `replaceN` - Replaces the first N matches of a pattern with a String
   - `explode` - Converts a string to a list. Each of the characters in the string is given an index that starts from 0
@@ -185,7 +186,7 @@ print(bye); // Bye Bye Hey
 - [x] `read` buildin function for reading from stdin
 - [ ] `import` buildin for importing other Beavieeer files.
 - [ ] **file utility** functions for reading and writing to files.
-- [ ] `parseInt` buildin function for parsing a **String** into an **Int**
+- [x] `parseNumber` buildin function for parsing a **String** into an **Int**
 
 ---
 

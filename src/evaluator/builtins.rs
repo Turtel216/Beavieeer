@@ -23,6 +23,10 @@ pub fn new_builtins() -> HashMap<String, Object> {
     builtins.insert(String::from("sort"), Object::Builtin(2, lang_sort));
     builtins.insert(String::from("reverse"), Object::Builtin(1, lang_reverse));
     builtins.insert(String::from("trim"), Object::Builtin(1, lang_trim));
+    builtins.insert(
+        String::from("parseNumber"),
+        Object::Builtin(1, lang_parse_number),
+    );
     builtins.insert(String::from("explode"), Object::Builtin(1, lang_explode));
     builtins.insert(
         String::from("replaceString"),
@@ -198,6 +202,20 @@ fn lang_to_uppercase(args: Vec<Object>) -> Object {
             let new_string = s.to_uppercase();
             Object::String(new_string)
         }
+        o => Object::Error(format!(
+            "argument to `uppercase` must be a String. got {}",
+            o
+        )),
+    }
+}
+
+// Parse String to int
+fn lang_parse_number(args: Vec<Object>) -> Object {
+    match &args[0] {
+        Object::String(s) => match s.parse::<i64>() {
+            Ok(num) => Object::Int(num),
+            Err(_) => Object::Error(String::from("could not parse int")),
+        },
         o => Object::Error(format!(
             "argument to `uppercase` must be a String. got {}",
             o
