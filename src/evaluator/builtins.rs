@@ -4,14 +4,20 @@
 
 use crate::repl::read_from_stdin;
 use crate::{ast::Ident, evaluator::object::*};
+use std::fs::{self, File};
+use std::io::Write;
 use std::{cell::RefCell, collections::HashMap, rc::Rc};
 
 use super::{Env, Evaluator};
-use std::io::{stdin, BufRead};
 
 pub fn new_builtins() -> HashMap<String, Object> {
     let mut builtins = HashMap::new();
     builtins.insert(String::from("read"), Object::Builtin(0, lang_read));
+    builtins.insert(String::from("readFile"), Object::Builtin(1, lang_read_file));
+    builtins.insert(
+        String::from("writeFile"),
+        Object::Builtin(2, lang_write_file),
+    );
     builtins.insert(String::from("len"), Object::Builtin(1, lang_len));
     builtins.insert(String::from("first"), Object::Builtin(1, lang_first));
     builtins.insert(String::from("last"), Object::Builtin(1, lang_last));
@@ -359,8 +365,54 @@ fn lang_filter(args: Vec<Object>) -> Object {
 }
 
 // TODO
-fn lang_sort(args: Vec<Object>) -> Object {
+fn lang_sort(_args: Vec<Object>) -> Object {
     Object::Error(String::from("TODO: sort is not implemented yet"))
+}
+
+// Build in function for reading from a file
+fn lang_read_file(args: Vec<Object>) -> Object {
+    let s = match args.get(0) {
+        Some(Object::String(s)) => s,
+        Some(o) => {
+            return Object::Error(format!(
+                "argument to `lang_read_file` must be a String. got {:?}",
+                o
+            ))
+        }
+        None => return Object::Error("No arguments provided".to_string()),
+    };
+
+    match fs::read_to_string(s) {
+        Ok(content) => Object::String(content),
+        Err(err) => Object::Error(format!("Error opening file: {}", err)),
+    }
+}
+
+// Build in function for writing to a file
+fn lang_write_file(args: Vec<Object>) -> Object {
+    if args.len() < 2 {
+        return Object::Error("Expected 2 arguments for `writeFile`".to_string());
+    }
+
+    let (s1, s2) = match (&args[0], &args[1]) {
+        (Object::String(s1), Object::String(s2)) => (s1, s2),
+        (o1, o2) => {
+            return Object::Error(format!(
+                "argument to `writeFile` must be String and String. got {:?} and {:?}",
+                o1, o2
+            ))
+        }
+    };
+
+    let mut file = match File::create(s1) {
+        Ok(f) => f,
+        Err(err) => return Object::Error(format!("Failed to open file: {}", err)),
+    };
+
+    match file.write_all(s2.as_bytes()) {
+        Ok(_) => Object::Null,
+        Err(err) => Object::Error(format!("Failed to write to file: {}", err)),
+    }
 }
 
 #[test]
