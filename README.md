@@ -24,6 +24,7 @@
   - `readFile` - Read the contents of a file.
   - `writeFile` - Writes to a file the given content `String`. Creates a file if it does not exist.
 - **List Operations**: 
+  - `len` - Returns the length of a given list.
   - `first` - Returns the first element of a list.
   - `last` - Returns the last element of a list.
   - `tail` - Returns all elements of a list except the first.
@@ -185,10 +186,9 @@ print(bye); // Bye Bye Hey
 
 ## Future Feautes
 
-- [x] `read` buildin function for reading from stdin
 - [ ] `import` buildin for importing other Beavieeer files.
-- [x] **file utility** functions for reading and writing to files.
-- [x] `parseNumber` buildin function for parsing a **String** into an **Int**
+- [ ] **http utility** functions.
+- [ ] **REPL** improvements.
 
 ---
 
