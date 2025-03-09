@@ -155,11 +155,8 @@ impl<'a> Lexer<'a> {
     fn consume_identifier(&mut self) -> Token {
         let start_pos = self.pos;
 
-        loop {
-            match self.ch {
-                b'a'..=b'z' | b'A'..=b'Z' | b'_' => self.read_char(),
-                _ => break,
-            }
+        while let b'a'..=b'z' | b'A'..=b'Z' | b'_' = self.ch {
+            self.read_char();
         }
 
         let literal = &self.input[start_pos..self.pos];
@@ -179,11 +176,8 @@ impl<'a> Lexer<'a> {
     fn consume_number(&mut self) -> Token {
         let start_pos = self.pos;
 
-        loop {
-            match self.ch {
-                b'0'..=b'9' => self.read_char(),
-                _ => break,
-            }
+        while let b'0'..=b'9' = self.ch {
+            self.read_char();
         }
 
         let literal = &self.input[start_pos..self.pos];

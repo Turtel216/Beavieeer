@@ -58,7 +58,7 @@ impl fmt::Display for Object {
                 let mut result = String::new();
                 for (i, Ident(ref s)) in params.iter().enumerate() {
                     if i < 1 {
-                        result.push_str(&format!("{}", s));
+                        result.push_str(&s.to_string());
                     } else {
                         result.push_str(&format!(", {}", s));
                     }

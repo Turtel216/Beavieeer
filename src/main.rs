@@ -5,7 +5,6 @@
 use beavieeer::repl;
 use std::env;
 use std::fs;
-use std::io::stdin;
 use std::io::stdout;
 
 fn main() {

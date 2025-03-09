@@ -46,3 +46,9 @@ impl Env {
         self.store.insert(name, value.clone());
     }
 }
+
+impl Default for Env {
+    fn default() -> Self {
+        Self::new()
+    }
+}

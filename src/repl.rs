@@ -9,7 +9,6 @@ use crate::evaluator::Evaluator;
 use crate::lexer::Lexer;
 use crate::parser::Parser;
 use std::cell::RefCell;
-use std::error::Error;
 use std::io::Write;
 use std::io::{stdin, BufRead};
 use std::rc::Rc;
@@ -65,11 +64,11 @@ pub fn start(output: &mut dyn Write) {
                 return;
             }
             line => {
-                let mut parser = Parser::new(Lexer::new(&line));
+                let mut parser = Parser::new(Lexer::new(line));
                 let program = parser.parse();
                 let errors = parser.get_errors();
 
-                if errors.len() > 0 {
+                if !errors.is_empty() {
                     for err in errors {
                         println!("{}", err);
                     }
@@ -84,7 +83,7 @@ pub fn start(output: &mut dyn Write) {
     }
 }
 
-pub fn run_file(input: &String) -> () {
+pub fn run_file(input: &str) {
     let mut env = Env::from(new_builtins());
 
     env.set(
@@ -100,11 +99,11 @@ pub fn run_file(input: &String) -> () {
     let mut evaluator = Evaluator::new(Rc::new(RefCell::new(env)));
     load_prelude(&mut evaluator);
 
-    let mut parser = Parser::new(Lexer::new(&input));
+    let mut parser = Parser::new(Lexer::new(input));
     let program = parser.parse();
     let errors = parser.get_errors();
 
-    if errors.len() > 0 {
+    if !errors.is_empty() {
         for err in errors {
             println!("{}", err);
         }
@@ -121,20 +120,12 @@ pub fn read_from_stdin(line: &mut String) -> usize {
     input.read_line(line).unwrap()
 }
 
-fn error_writting_to_stdout(err: &dyn Error) -> usize {
-    panic!("Error when writting to stdout: {}", err);
-}
-
-fn error_reading_from_stdin(err: &dyn Error) -> usize {
-    panic!("Error when reading from stdin: {}", err);
-}
-
-fn load_prelude(evaluator: &mut Evaluator) -> () {
+fn load_prelude(evaluator: &mut Evaluator) {
     let mut parser = Parser::new(Lexer::new(STAND_PRELUDE));
     let program = parser.parse();
     let errors = parser.get_errors();
 
-    if errors.len() > 0 {
+    if !errors.is_empty() {
         for err in errors {
             println!("Prelude Error: {}", err);
         }
