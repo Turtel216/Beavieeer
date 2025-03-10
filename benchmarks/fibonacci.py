@@ -3,4 +3,4 @@ def fib_recursive(n):
         return n
     return fib_recursive(n - 1) + fib_recursive(n - 2)
 
-fib_recursive(30)
+print(fib_recursive(30))

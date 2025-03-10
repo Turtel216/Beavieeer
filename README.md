@@ -213,8 +213,8 @@ We benchmarked our interpreter against Python using a **Fibonacci sequence calcu
 ### Benchmark Results
 | Language | Execution Time (mean ± σ) | Speed Factor |
 |----------|-------------------------|-------------|
-| **Python 3** | 3.584 ms ± 0.095 ms | **1x (Baseline)** |
-| **Beavieer 1.2** | 116.5 ms ± 1.4 ms | **~30x slower** |
+| **Python 3** | 115.8 ms ± 0.7 ms | **1x (Baseline)** |
+| **Beavieer 1.2** | 3.020 s ± 0.096 s | **~26.07x slower** |
 
 ---
 
