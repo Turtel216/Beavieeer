@@ -192,6 +192,50 @@ print(bye); // Bye Bye Hey
 
 ---
 
+Here’s a **GitHub README section** to document your benchmarks in a structured and professional way.  
+
+---
+
+## Benchmarking Performance
+
+We benchmarked our interpreter against Python using a **Fibonacci sequence calculation** to measure execution speed. The tests were conducted using [`hyperfine`](https://github.com/sharkdp/hyperfine), a reliable benchmarking tool.
+
+### 📌 **Benchmark Setup**
+1. **Comparison**: Our interpreter vs. Python 3.
+2. **Tool Used**: [`hyperfine`](https://github.com/sharkdp/hyperfine) (for accurate timing).
+3. **Command Used**:
+    ```sh
+    hyperfine "python3 ./benchmarks/fibonacci.py" "./target/release/beavieeer ./benchmarks/fibonacci.be"
+    ```
+
+---
+
+### Benchmark Results
+| Language | Execution Time (mean ± σ) | Speed Factor |
+|----------|-------------------------|-------------|
+| **Python 3** | 3.584 ms ± 0.095 ms | **1x (Baseline)** |
+| **Beavieer 1.2** | 116.5 ms ± 1.4 ms | **~30x slower** |
+
+---
+
+### Running the Benchmark Yourself
+#### Install Hyperfine (if not installed)
+```sh
+# On Linux/macOS
+sudo apt install hyperfine   # Debian/Ubuntu
+brew install hyperfine       # macOS (Homebrew)
+
+# On Windows (via Cargo)
+cargo install hyperfine
+```
+
+#### Run the Benchmark 
+```sh
+hyperfine "python3 ./benchmarks/fibonacci.py" "./target/release/beavieeer ./benchmarks/fibonacci.be"
+```
+
+---
+
 ## Contributing
 Contributions are welcome! Please open an issue or submit a pull request if you have ideas for improvements.
 
