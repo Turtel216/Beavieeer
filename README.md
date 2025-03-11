@@ -246,6 +246,7 @@ We benchmarked our interpreter against Python using a **Fibonacci sequence calcu
 |----------|-------------------------|-------------|
 | **Python 3** | 115.8 ms ± 0.7 ms | **1x (Baseline)** |
 | **Beavieer 1.2** | 3.020 s ± 0.096 s | **~26.07x slower** |
+| **Beavieer 1.3** | 2.841 s ± 0.086 s | **~24.38x slower** |
 
 ---
 

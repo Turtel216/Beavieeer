@@ -98,6 +98,7 @@ impl Evaluator {
         }
     }
 
+    #[inline]
     fn eval_expr(&mut self, expr: Expr) -> Option<Object> {
         match expr {
             Expr::Ident(ident) => Some(self.eval_ident(ident)),
