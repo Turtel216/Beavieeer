@@ -1,5 +1,36 @@
 # Beavieeer Language
 
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+  - [Core Language Features](#core-language-features)
+  - [Standard Library](#standard-library)
+  - [Execution Modes](#execution-modes)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Script Mode](#script-mode)
+  - [Interactive REPL](#interactive-repl)
+- [Language Syntax](#language-syntax)
+  - [Variables](#variables)
+  - [If Statements](#if-statements)
+  - [If Expressions](#if-expressions)
+  - [List](#list)
+  - [Anonymous Functions](#anonymous-functions)
+  - [Hashes](#hashes)
+  - [Strings](#strings)
+- [Future Features](#future-features)
+- [Benchmarking Performance](#benchmarking-performance)
+  - [Benchmark Setup](#benchmark-setup)
+  - [Benchmark Results](#benchmark-results)
+  - [Running the Benchmark Yourself](#running-the-benchmark-yourself)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+---
+
 ## About
 
 **Beavieeer** is a simple, C-like interpreted toy programming language written in Rust. This repository contains the implementation of the interpreter for Beavieeer. The language is designed to be easy to learn, with basic control structures, data types, and functional programming features. It supports both running scripts from `.be` files and an interactive REPL (Read-Eval-Print Loop).
