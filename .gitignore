@@ -26,3 +26,7 @@ Cargo.lock
 
 # Flamegraph output
 flamegraph.svg
+
+# hyperfine output
+perf.data
+perf.data.old
