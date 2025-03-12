@@ -13,7 +13,7 @@ fn main() {
     let mut stdout_lock = stdout.lock();
 
     if args.len() == 1 {
-        repl::start(&mut stdout_lock);
+        repl::start_repl(&mut stdout_lock);
     } else if args.len() == 2 {
         let contents =
             fs::read_to_string(args[1].clone()).expect("Should have been able to read the file");
