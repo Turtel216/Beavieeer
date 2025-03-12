@@ -25,6 +25,7 @@ let fold = fun(f, init, lst) {
 };
 ";
 
+#[inline]
 pub fn start(output: &mut dyn Write) {
     let mut line = String::new();
     let mut lang_input = String::new();
@@ -83,6 +84,7 @@ pub fn start(output: &mut dyn Write) {
     }
 }
 
+#[inline]
 pub fn run_file(input: &str) {
     let mut env = Env::from(new_builtins());
 
@@ -115,11 +117,13 @@ pub fn run_file(input: &str) {
 }
 
 // TODO: find a more efficient method. Dont call stdin().lock() on every function call
+#[inline]
 pub fn read_from_stdin(line: &mut String) -> usize {
     let mut input = stdin().lock();
     input.read_line(line).unwrap()
 }
 
+#[inline]
 fn load_prelude(evaluator: &mut Evaluator) {
     let mut parser = Parser::new(Lexer::new(STAND_PRELUDE));
     let program = parser.parse();
