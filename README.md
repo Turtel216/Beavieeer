@@ -77,7 +77,7 @@
 
 ### Execution Modes:
 - **Script Mode**: Run Beavieeer programs from a file with the `.be` extension.
-- **Interactive REPL**: Explore and test Beavieeer code interactively. Exit the REPL by typing `:q`.
+- **Interactive REPL**: Experiment with Beavieeer code interactively. To exit, type `:q`.
 
 ---
 
@@ -134,7 +134,7 @@ Start the REPL:
 ```bash
 ./beavieeer
 ```
-You can now write and execute Beavieeer code interactively. Exit the REPL by typing `:q`.
+You can now write and execute Beavieeer code interactively. Exit the REPL by typing `:q`. Use `:info` to list built-in functions or `:info <function>` to get details about a specific one. You can also access all available commands and information by typing `:help`.
 
 ---
 
@@ -215,11 +215,11 @@ print(bye); // Bye Bye Hey
 
 ---
 
-## Future Feautes
+## Future Features 
 
 - [ ] `import` buildin for importing other Beavieeer files.
 - [ ] **http utility** functions.
-- [ ] **REPL** improvements.
+- [x] **REPL** improvements.
 
 ---
 
