@@ -223,10 +223,6 @@ print(bye); // Bye Bye Hey
 
 ---
 
-Here’s a **GitHub README section** to document your benchmarks in a structured and professional way.  
-
----
-
 ## Benchmarking Performance
 
 We benchmarked our interpreter against Python using a **Fibonacci sequence calculation** to measure execution speed. The tests were conducted using [`hyperfine`](https://github.com/sharkdp/hyperfine), a reliable benchmarking tool.
