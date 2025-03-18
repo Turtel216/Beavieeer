@@ -244,7 +244,7 @@ fn get_buildin_doc() -> HashMap<String, String> {
     // List operations
     map.insert(
         String::from("len"),
-        String::from("Returns the length of a given list.\nList -> Integer"),
+        String::from("Returns the length of a given list.\nList -> Number"),
     );
     map.insert(
         String::from("first"),
@@ -261,16 +261,16 @@ fn get_buildin_doc() -> HashMap<String, String> {
     map.insert(
         String::from("get"),
         String::from(
-            "Returns the element of a list specified by its index.\nList, Integer -> ListElement",
+            "Returns the element of a list specified by its index.\nList -> Number -> ListElement",
         ),
     );
     map.insert(
         String::from("map"),
-        String::from("Applies a function to each element of a list and returns a new list.\nList, Function -> List"),
+        String::from("Applies a function to each element of a list and returns a new list.\nList -> Function -> List"),
     );
     map.insert(
         String::from("filter"),
-        String::from("Filters a list based on a predicate function and returns a new (filtered) list.\nList, Function -> List"),
+        String::from("Filters a list based on a predicate function and returns a new (filtered) list.\nList -> Function -> List"),
     );
     map.insert(
         String::from("reverse"),
@@ -280,7 +280,7 @@ fn get_buildin_doc() -> HashMap<String, String> {
     // Functional Utilities
     map.insert(
         String::from("fold"),
-        String::from("Reduces a list to a single value using a function.\nList, Function, InitialValue -> Value"),
+        String::from("Reduces a list to a single value using a function.\nList -> Function -> InitialValue -> Value"),
     );
 
     // String Utilities
@@ -304,11 +304,11 @@ fn get_buildin_doc() -> HashMap<String, String> {
     );
     map.insert(
         String::from("replaceString"),
-        String::from("Replaces all matches of a pattern with a String.\nString, Pattern, Replacement -> String"),
+        String::from("Replaces all matches of a pattern with a String.\nString -> Pattern(String) -> String(String) -> String"),
     );
     map.insert(
         String::from("replaceN"),
-        String::from("Replaces the first N matches of a pattern with a String.\nString, Pattern, Replacement, Count -> String"),
+        String::from("Replaces the first N matches of a pattern with a String.\nString -> Replacement(String) -> Count(Number) -> String"),
     );
     map.insert(
         String::from("explode"),
