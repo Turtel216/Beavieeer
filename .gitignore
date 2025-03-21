@@ -23,3 +23,10 @@ Cargo.lock
 # Added by cargo
 
 /target
+
+# Flamegraph output
+flamegraph.svg
+
+# hyperfine output
+perf.data
+perf.data.old

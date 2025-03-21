@@ -1,5 +1,36 @@
 # Beavieeer Language
 
+## Table of Contents
+- [About](#about)
+- [Features](#features)
+  - [Core Language Features](#core-language-features)
+  - [Standard Library](#standard-library)
+  - [Execution Modes](#execution-modes)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Usage](#usage)
+  - [Script Mode](#script-mode)
+  - [Interactive REPL](#interactive-repl)
+- [Language Syntax](#language-syntax)
+  - [Variables](#variables)
+  - [If Statements](#if-statements)
+  - [If Expressions](#if-expressions)
+  - [List](#list)
+  - [Anonymous Functions](#anonymous-functions)
+  - [Hashes](#hashes)
+  - [Strings](#strings)
+- [Future Features](#future-features)
+- [Benchmarking Performance](#benchmarking-performance)
+  - [Benchmark Setup](#benchmark-setup)
+  - [Benchmark Results](#benchmark-results)
+  - [Running the Benchmark Yourself](#running-the-benchmark-yourself)
+- [Contributing](#contributing)
+- [License](#license)
+- [Contact](#contact)
+
+---
+
 ## About
 
 **Beavieeer** is a simple, C-like interpreted toy programming language written in Rust. This repository contains the implementation of the interpreter for Beavieeer. The language is designed to be easy to learn, with basic control structures, data types, and functional programming features. It supports both running scripts from `.be` files and an interactive REPL (Read-Eval-Print Loop).
@@ -46,7 +77,7 @@
 
 ### Execution Modes:
 - **Script Mode**: Run Beavieeer programs from a file with the `.be` extension.
-- **Interactive REPL**: Explore and test Beavieeer code interactively. Exit the REPL by typing `:q`.
+- **Interactive REPL**: Experiment with Beavieeer code interactively. To exit, type `:q`.
 
 ---
 
@@ -103,7 +134,7 @@ Start the REPL:
 ```bash
 ./beavieeer
 ```
-You can now write and execute Beavieeer code interactively. Exit the REPL by typing `:q`.
+You can now write and execute Beavieeer code interactively. Exit the REPL by typing `:q`. Use `:info` to list built-in functions or `:info <function>` to get details about a specific one. You can also access all available commands and information by typing `:help`.
 
 ---
 
@@ -184,11 +215,53 @@ print(bye); // Bye Bye Hey
 
 ---
 
-## Future Feautes
+## Future Features 
 
 - [ ] `import` buildin for importing other Beavieeer files.
+- [ ] ``Hash` utility functions
 - [ ] **http utility** functions.
-- [ ] **REPL** improvements.
+- [x] **REPL** improvements.
+
+---
+
+## Benchmarking Performance
+
+We benchmarked our interpreter against Python using a **Fibonacci sequence calculation** to measure execution speed. The tests were conducted using [`hyperfine`](https://github.com/sharkdp/hyperfine), a reliable benchmarking tool.
+
+### 📌 **Benchmark Setup**
+1. **Comparison**: Our interpreter vs. Python 3.
+2. **Tool Used**: [`hyperfine`](https://github.com/sharkdp/hyperfine) (for accurate timing).
+3. **Command Used**:
+    ```sh
+    hyperfine "python3 ./benchmarks/fibonacci.py" "./target/release/beavieeer ./benchmarks/fibonacci.be"
+    ```
+
+---
+
+### Benchmark Results
+| Language | Execution Time (mean ± σ) | Speed Factor |
+|----------|-------------------------|-------------|
+| **Python 3** | 115.8 ms ± 0.7 ms | **1x (Baseline)** |
+| **Beavieer 1.2** | 3.020 s ± 0.096 s | **~26.07x slower** |
+| **Beavieer 1.3** | 2.841 s ± 0.086 s | **~24.38x slower** |
+
+---
+
+### Running the Benchmark Yourself
+#### Install Hyperfine (if not installed)
+```sh
+# On Linux/macOS
+sudo apt install hyperfine   # Debian/Ubuntu
+brew install hyperfine       # macOS (Homebrew)
+
+# On Windows (via Cargo)
+cargo install hyperfine
+```
+
+#### Run the Benchmark 
+```sh
+hyperfine "python3 ./benchmarks/fibonacci.py" "./target/release/beavieeer ./benchmarks/fibonacci.be"
+```
 
 ---
 

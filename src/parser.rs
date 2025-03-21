@@ -95,10 +95,10 @@ impl<'a> Parser<'a> {
     fn expect_next_token(&mut self, tok: Token) -> bool {
         if self.next_token_is(&tok) {
             self.bump();
-            return true;
+            true
         } else {
             self.error_next_token(tok);
-            return false;
+            false
         }
     }
 
@@ -134,9 +134,8 @@ impl<'a> Parser<'a> {
         let mut program: Program = vec![];
 
         while !self.current_token_is(Token::Eof) {
-            match self.parse_stmt() {
-                Some(stmt) => program.push(stmt),
-                None => {}
+            if let Some(stmt) = self.parse_stmt() {
+                program.push(stmt)
             }
             self.bump();
         }
@@ -150,10 +149,10 @@ impl<'a> Parser<'a> {
         let mut block = vec![];
 
         while !self.current_token_is(Token::Rbrace) && !self.current_token_is(Token::Eof) {
-            match self.parse_stmt() {
-                Some(stmt) => block.push(stmt),
-                None => {}
+            if let Some(stmt) = self.parse_stmt() {
+                block.push(stmt)
             }
+
             self.bump();
         }
 
@@ -179,10 +178,7 @@ impl<'a> Parser<'a> {
             _ => return None,
         };
 
-        let name = match self.parse_ident() {
-            Some(name) => name,
-            None => return None,
-        };
+        let name = self.parse_ident()?;
 
         if !self.expect_next_token(Token::Assign) {
             return None;
@@ -190,10 +186,7 @@ impl<'a> Parser<'a> {
 
         self.bump();
 
-        let expr = match self.parse_expr(Precedence::Lowest) {
-            Some(expr) => expr,
-            None => return None,
-        };
+        let expr = self.parse_expr(Precedence::Lowest)?;
 
         if self.next_token_is(&Token::Semicolon) {
             self.bump();
@@ -209,10 +202,7 @@ impl<'a> Parser<'a> {
     fn parse_return_stmt(&mut self) -> Option<Stmt> {
         self.bump();
 
-        let expr = match self.parse_expr(Precedence::Lowest) {
-            Some(expr) => expr,
-            None => return None,
-        };
+        let expr = self.parse_expr(Precedence::Lowest)?;
 
         if self.next_token_is(&Token::Semicolon) {
             self.bump();
@@ -304,10 +294,7 @@ impl<'a> Parser<'a> {
     ///
     /// Wraps an identifier into an `Expr::Ident` variant.
     fn parse_ident_expr(&mut self) -> Option<Expr> {
-        match self.parse_ident() {
-            Some(ident) => Some(Expr::Ident(ident)),
-            None => None,
-        }
+        self.parse_ident().map(Expr::Ident)
     }
 
     /// Parses an integer literal expression.
@@ -315,7 +302,7 @@ impl<'a> Parser<'a> {
     /// Wraps an integer token into an `Expr::Literal(Literal::Int)` variant.
     fn parse_int_expr(&mut self) -> Option<Expr> {
         match self.current_token {
-            Token::Int(ref mut int) => Some(Expr::Literal(Literal::Int(int.clone()))),
+            Token::Int(ref mut int) => Some(Expr::Literal(Literal::Int(*int))),
             _ => None,
         }
     }
@@ -335,7 +322,7 @@ impl<'a> Parser<'a> {
     /// Converts a boolean token into an `Expr::Literal(Literal::Bool)` variant.
     fn parse_bool_expr(&mut self) -> Option<Expr> {
         match self.current_token {
-            Token::Bool(value) => Some(Expr::Literal(Literal::Bool(value == true))),
+            Token::Bool(value) => Some(Expr::Literal(Literal::Bool(value))),
             _ => None,
         }
     }
@@ -344,10 +331,8 @@ impl<'a> Parser<'a> {
     ///
     /// Parses a list of expressions enclosed in brackets and returns an `Expr::Literal(Literal::Array)`.
     fn parse_array_expr(&mut self) -> Option<Expr> {
-        match self.parse_expr_list(Token::Rbracket) {
-            Some(list) => Some(Expr::Literal(Literal::Array(list))),
-            None => None,
-        }
+        self.parse_expr_list(Token::Rbracket)
+            .map(|list| Expr::Literal(Literal::Array(list)))
     }
 
     /// Parses a hash (dictionary) expression.
@@ -359,10 +344,7 @@ impl<'a> Parser<'a> {
         while !self.next_token_is(&Token::Rbrace) {
             self.bump();
 
-            let key = match self.parse_expr(Precedence::Lowest) {
-                Some(expr) => expr,
-                None => return None,
-            };
+            let key = self.parse_expr(Precedence::Lowest)?;
 
             if !self.expect_next_token(Token::Colon) {
                 return None;
@@ -370,10 +352,7 @@ impl<'a> Parser<'a> {
 
             self.bump();
 
-            let value = match self.parse_expr(Precedence::Lowest) {
-                Some(expr) => expr,
-                None => return None,
-            };
+            let value = self.parse_expr(Precedence::Lowest)?;
 
             pairs.push((key, value));
 
@@ -437,10 +416,8 @@ impl<'a> Parser<'a> {
 
         self.bump();
 
-        match self.parse_expr(Precedence::Prefix) {
-            Some(expr) => Some(Expr::Prefix(prefix, Box::new(expr))),
-            None => None,
-        }
+        self.parse_expr(Precedence::Prefix)
+            .map(|expr| Expr::Prefix(prefix, Box::new(expr)))
     }
 
     /// Parses an infix expression.
@@ -465,10 +442,8 @@ impl<'a> Parser<'a> {
 
         self.bump();
 
-        match self.parse_expr(precedence) {
-            Some(expr) => Some(Expr::Infix(infix, Box::new(left), Box::new(expr))),
-            None => None,
-        }
+        self.parse_expr(precedence)
+            .map(|expr| Expr::Infix(infix, Box::new(left), Box::new(expr)))
     }
 
     /// Parses an index expression (array indexing).
@@ -477,10 +452,7 @@ impl<'a> Parser<'a> {
     fn parse_index_expr(&mut self, left: Expr) -> Option<Expr> {
         self.bump();
 
-        let index = match self.parse_expr(Precedence::Lowest) {
-            Some(expr) => expr,
-            None => return None,
-        };
+        let index = self.parse_expr(Precedence::Lowest)?;
 
         if !self.expect_next_token(Token::Rbracket) {
             return None;
@@ -514,10 +486,7 @@ impl<'a> Parser<'a> {
 
         self.bump();
 
-        let cond = match self.parse_expr(Precedence::Lowest) {
-            Some(expr) => expr,
-            None => return None,
-        };
+        let cond = self.parse_expr(Precedence::Lowest)?;
 
         if !self.expect_next_token(Token::Rparen) || !self.expect_next_token(Token::Lbrace) {
             return None;
@@ -551,10 +520,7 @@ impl<'a> Parser<'a> {
             return None;
         }
 
-        let params = match self.parse_func_params() {
-            Some(params) => params,
-            None => return None,
-        };
+        let params = self.parse_func_params()?;
 
         if !self.expect_next_token(Token::Lbrace) {
             return None;
@@ -605,10 +571,7 @@ impl<'a> Parser<'a> {
     ///
     /// Parses arguments and constructs an `Expr::Call`.
     fn parse_call_expr(&mut self, func: Expr) -> Option<Expr> {
-        let args = match self.parse_expr_list(Token::Rparen) {
-            Some(args) => args,
-            None => return None,
-        };
+        let args = self.parse_expr_list(Token::Rparen)?;
 
         Some(Expr::Call {
             func: Box::new(func),
@@ -1591,4 +1554,3 @@ return 993322;
         }
     }
 }
-

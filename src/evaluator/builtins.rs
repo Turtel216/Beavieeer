@@ -90,7 +90,7 @@ fn lang_last(args: Vec<Object>) -> Object {
 fn lang_tail(args: Vec<Object>) -> Object {
     match &args[0] {
         Object::Array(o) => {
-            if o.len() > 0 {
+            if !o.is_empty() {
                 Object::Array(o[1..].to_vec())
             } else {
                 Object::Null
@@ -285,9 +285,9 @@ fn lang_map(args: Vec<Object>) -> Object {
 
             Object::Array(new_array)
         }
-        (Object::Array(_), Object::Builtin(_, _)) => Object::Error(format!(
-            "cannot use builtin functions with map yet; use a function literal"
-        )),
+        (Object::Array(_), Object::Builtin(_, _)) => Object::Error(
+            "cannot use builtin functions with map yet; use a function literal".to_string(),
+        ),
         (Object::Array(_), not_func) => Object::Error(format!(
             "second argument to `map` must be a function, got {}",
             not_func
@@ -350,9 +350,9 @@ fn lang_filter(args: Vec<Object>) -> Object {
 
             Object::Array(new_array)
         }
-        (Object::Array(_), Object::Builtin(_, _)) => Object::Error(format!(
-            "cannot use builtin functions with filter yet; use a function literal"
-        )),
+        (Object::Array(_), Object::Builtin(_, _)) => Object::Error(
+            "cannot use builtin functions with filter yet; use a function literal".to_string(),
+        ),
         (Object::Array(_), not_func) => Object::Error(format!(
             "second argument to `filter` must be a function, got {}",
             not_func
@@ -371,7 +371,7 @@ fn lang_sort(_args: Vec<Object>) -> Object {
 
 // Build in function for reading from a file
 fn lang_read_file(args: Vec<Object>) -> Object {
-    let s = match args.get(0) {
+    let s = match args.first() {
         Some(Object::String(s)) => s,
         Some(o) => {
             return Object::Error(format!(
