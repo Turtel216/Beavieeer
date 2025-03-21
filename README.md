@@ -218,6 +218,7 @@ print(bye); // Bye Bye Hey
 ## Future Features 
 
 - [ ] `import` buildin for importing other Beavieeer files.
+- [ ] ``Hash` utility functions
 - [ ] **http utility** functions.
 - [x] **REPL** improvements.
 
