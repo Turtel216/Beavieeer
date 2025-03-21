@@ -49,6 +49,7 @@ let fold = fun(f, init, lst) {
 ///
 /// ```
 /// use std::io;
+/// use beavieeer::repl::start_repl;
 /// let mut stdout = io::stdout();
 /// start_repl(&mut stdout);
 /// ```
